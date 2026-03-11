@@ -2,12 +2,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import '../../data/datasource/local/storage.dart';
-import '../../di/di.dart';
+import '../../adopt_pet.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../domain/services/snack_shower.dart';
-import 'navigation_key_provider.dart';
 
 @lazySingleton
 class NavigationRouter {
@@ -28,50 +24,46 @@ class NavigationRouter {
     this._snackShower,
   );
 
- // static const mustAuthenticatedRoute = [IndexPage.routePath];
+ static const mustAuthenticatedRoute = [IndexPage.routePath];
 
-  // late final router = GoRouter(
-  //   navigatorKey: _navigationKeyProvider.globalKey,
-  //   initialLocation: IndexPage.routePath,
-  //   redirect: (context, state) async {
-  //     final currentRoute = state.fullPath;
-  //     log("Current route $currentRoute");
-  //
-  //     final isNewInstall = await _storage.getIsNewInstall();
-  //     if (isNewInstall) {
-  //       return LandingPage.routePath;
-  //     }
-  //
-  //     if (context.mounted && mustAuthenticatedRoute.contains(currentRoute)) {
-  //       final authentication = context.read<AuthenticationCubit>();
-  //       if (authentication.state is! AuthenticationAuthenticated) {
-  //         return LoginPage.createRoute(redirectRoute: "${state.uri}");
-  //       }
-  //     }
-  //
-  //     return null;
-  //   },
-  //   routes: [
-  //     GoRoute(
-  //       onExit: _handleDoubleTapToExit,
-  //       path: IndexPage.routePath,
-  //       builder: (context, state) {
-  //         final tabIndex =
-  //             int.tryParse(state.uri.queryParameters['tab'] ?? '') ?? 0;
-  //         return IndexPage(
-  //           onIndexChanged: (index) => _currentIndex = index,
-  //           initialTab: tabIndex,
-  //           indexCallback: (useIndexPageNavigator) {
-  //             _useIndexPageNavigator = useIndexPageNavigator;
-  //           },
-  //         );
-  //       },
-  //       routes: [
-  //
-  //       ],
-  //     )
-  //   ],
-  // );
+  late final router = GoRouter(
+    navigatorKey: _navigationKeyProvider.globalKey,
+    initialLocation: IndexPage.routePath,
+    redirect: (context, state) async {
+      final currentRoute = state.fullPath;
+      log("Current route $currentRoute");
+
+
+      if (context.mounted && mustAuthenticatedRoute.contains(currentRoute)) {
+        final authentication = context.read<AuthenticationCubit>();
+        if (authentication.state is! AuthenticationAuthenticated) {
+          return LoginPage.createRoute(redirectRoute: "${state.uri}");
+        }
+      }
+
+      return null;
+    },
+    routes: [
+      GoRoute(
+        onExit: _handleDoubleTapToExit,
+        path: IndexPage.routePath,
+        builder: (context, state) {
+          final tabIndex =
+              int.tryParse(state.uri.queryParameters['tab'] ?? '') ?? 0;
+          return IndexPage(
+            onIndexChanged: (index) => _currentIndex = index,
+            initialTab: tabIndex,
+            indexCallback: (useIndexPageNavigator) {
+              _useIndexPageNavigator = useIndexPageNavigator;
+            },
+          );
+        },
+        routes: [
+
+        ],
+      )
+    ],
+  );
   DateTime? currentBackPressTime;
 
   Future<bool> _handleDoubleTapToExit(

@@ -9,6 +9,7 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:adopt_pet/adopt_pet.dart' as _i229;
 import 'package:adopt_pet/data/datasource/local/storage.dart' as _i622;
 import 'package:adopt_pet/data/datasource/remote/firebase_api/auth_data_source/auth_data_source.dart'
     as _i464;
@@ -30,6 +31,10 @@ import 'package:adopt_pet/domain/usecase/auth_usecase/sign_out_usecase.dart'
     as _i706;
 import 'package:adopt_pet/domain/usecase/auth_usecase/sign_up_usecase.dart'
     as _i780;
+import 'package:adopt_pet/presentation/auth/login/cubit/login_cubit.dart'
+    as _i521;
+import 'package:adopt_pet/presentation/blocs/authentication_cubit/authentication_cubit_provider.dart'
+    as _i724;
 import 'package:adopt_pet/presentation/navigation/navigation_key_provider.dart'
     as _i758;
 import 'package:adopt_pet/presentation/navigation/router.dart' as _i1065;
@@ -52,6 +57,7 @@ extension GetItInjectableX on _i174.GetIt {
     final firebaseModule = _$FirebaseModule();
     final loggerModule = _$LoggerModule();
     final sharedPreferencesProvider = _$SharedPreferencesProvider();
+    final authenticationCubitProvider = _$AuthenticationCubitProvider();
     gh.lazySingleton<_i59.FirebaseAuth>(() => firebaseModule.firebaseAuth);
     gh.lazySingleton<_i974.FirebaseFirestore>(
       () => firebaseModule.firebaseFireStore,
@@ -103,6 +109,21 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i780.SignUpUseCase>(
       () => _i780.SignUpUseCase(gh<_i279.AuthRepository>()),
     );
+    await gh.singletonAsync<_i229.AuthenticationCubit>(
+      () => authenticationCubitProvider.provide(
+        gh<_i229.AppStorage>(),
+        gh<_i229.SignOutUseCase>(),
+        gh<_i229.GetUserUseCase>(),
+        gh<_i229.ISnackShower>(),
+      ),
+      preResolve: true,
+    );
+    gh.factory<_i521.LoginCubit>(
+      () => _i521.LoginCubit(
+        gh<_i229.SignInUseCase>(),
+        gh<_i229.AuthenticationCubit>(),
+      ),
+    );
     return this;
   }
 }
@@ -112,3 +133,5 @@ class _$FirebaseModule extends _i24.FirebaseModule {}
 class _$LoggerModule extends _i454.LoggerModule {}
 
 class _$SharedPreferencesProvider extends _i905.SharedPreferencesProvider {}
+
+class _$AuthenticationCubitProvider extends _i724.AuthenticationCubitProvider {}

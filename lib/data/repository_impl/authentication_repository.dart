@@ -15,9 +15,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<UserEntity> signUp({
     required String email,
     required String password,
-    required String role,
     required String userName,
-    String? organization,
   }) async {
     try {
       return await _userDataSource.signUp(

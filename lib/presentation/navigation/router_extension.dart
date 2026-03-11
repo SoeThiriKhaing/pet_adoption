@@ -1,3 +1,4 @@
+import 'package:adopt_pet/adopt_pet.dart';
 import 'package:adopt_pet/presentation/navigation/router.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -13,25 +14,8 @@ extension NavigationExtension on BuildContext {
     selectTab(page);
   }
 
-  // void goLogin() => go(LoginPage.routePath);
-  //
-  // void pushInterViewerLogin() => push(InterviewLoginPage.routePath);
-  //
-  // void pushRespondentLogin() => push(RespondentLoginPage.routePath);
-  //
-  // void pushCreateForm() => push(CreateFormPage.routePath);
-  //
-  // void goSignUp() => go(SignUpPage.routePath);
-  //
-  // void goEditForm(SurveyInfoEntity surveyInfo) => go(
-  //       EditFormPage.routePath,
-  //       extra: surveyInfo,
-  //     );
-  //
-  // void pushEditForm(SurveyInfoEntity surveyInfo) => push(
-  //       EditFormPage.routePath,
-  //       extra: surveyInfo,
-  //     );
+  void goLogin() => go(LoginPage.routePath);
+
 
 
 }
