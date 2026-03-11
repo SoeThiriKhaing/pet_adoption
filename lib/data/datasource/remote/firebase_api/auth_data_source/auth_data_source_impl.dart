@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import '../../../../model/user/user.dart';
@@ -9,7 +7,6 @@ import 'auth_data_source.dart';
 
 @LazySingleton(as: AuthDataSource)
 class FirebaseUserDataSource implements AuthDataSource {
-  final GoogleSignIn _googleSignIn;
   final FirebaseAuth _firebaseAuth;
   final FirebaseFirestore _firebaseFirestore;
   final Logger _logger;
@@ -17,7 +14,6 @@ class FirebaseUserDataSource implements AuthDataSource {
     this._firebaseAuth,
     this._firebaseFirestore,
     this._logger,
-    this._googleSignIn,
   );
   @override
   Future<UserModel> signUp({
@@ -120,7 +116,6 @@ class FirebaseUserDataSource implements AuthDataSource {
   @override
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
-    await _googleSignIn.signOut();
     _logger.d('Sign Out Success');
   }
 }

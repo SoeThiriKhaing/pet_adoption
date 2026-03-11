@@ -1,6 +1,7 @@
-import 'package:adopt_pet/adopt_pet.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../../../adopt_pet.dart';
 
 part 'register_state.dart';
 

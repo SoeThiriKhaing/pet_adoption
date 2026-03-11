@@ -32,8 +32,6 @@ class NavigationRouter {
     redirect: (context, state) async {
       final currentRoute = state.fullPath;
       log("Current route $currentRoute");
-
-
       if (context.mounted && mustAuthenticatedRoute.contains(currentRoute)) {
         final authentication = context.read<AuthenticationCubit>();
         if (authentication.state is! AuthenticationAuthenticated) {
@@ -59,6 +57,15 @@ class NavigationRouter {
           );
         },
         routes: [
+          GoRoute(
+            path: LoginPage.routeName,
+            builder: (context, state) {
+              return BlocProvider(
+                create: (context) => inject<LoginCubit>(),
+                child: const LoginPage(),
+              );
+            },
+          ),
 
         ],
       )

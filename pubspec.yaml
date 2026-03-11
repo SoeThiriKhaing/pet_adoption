@@ -1,4 +1,4 @@
-name: adopt_pet
+name: pet
 description: "A new Flutter project."
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -73,7 +73,7 @@ flutter:
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
-  # example:
+  # stk:
   # fonts:
   #   - family: Schyler
   #     fonts:

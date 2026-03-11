@@ -9,42 +9,35 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:adopt_pet/adopt_pet.dart' as _i229;
-import 'package:adopt_pet/data/datasource/local/storage.dart' as _i622;
-import 'package:adopt_pet/data/datasource/remote/firebase_api/auth_data_source/auth_data_source.dart'
-    as _i464;
-import 'package:adopt_pet/data/datasource/remote/firebase_api/auth_data_source/auth_data_source_impl.dart'
-    as _i315;
-import 'package:adopt_pet/data/repository_impl/authentication_repository.dart'
-    as _i613;
-import 'package:adopt_pet/di/modules/firebase.dart' as _i24;
-import 'package:adopt_pet/di/modules/logger.dart' as _i454;
-import 'package:adopt_pet/di/modules/shared_preferences_provider.dart' as _i905;
-import 'package:adopt_pet/domain/repository/authentication_repository.dart'
-    as _i279;
-import 'package:adopt_pet/domain/services/snack_shower.dart' as _i123;
-import 'package:adopt_pet/domain/usecase/auth_usecase/get_user_usecase.dart'
-    as _i1051;
-import 'package:adopt_pet/domain/usecase/auth_usecase/sign_in_usecase.dart'
-    as _i555;
-import 'package:adopt_pet/domain/usecase/auth_usecase/sign_out_usecase.dart'
-    as _i706;
-import 'package:adopt_pet/domain/usecase/auth_usecase/sign_up_usecase.dart'
-    as _i780;
-import 'package:adopt_pet/presentation/auth/login/cubit/login_cubit.dart'
-    as _i521;
-import 'package:adopt_pet/presentation/blocs/authentication_cubit/authentication_cubit_provider.dart'
-    as _i724;
-import 'package:adopt_pet/presentation/navigation/navigation_key_provider.dart'
-    as _i758;
-import 'package:adopt_pet/presentation/navigation/router.dart' as _i1065;
-import 'package:adopt_pet/services/snack_shower.dart' as _i441;
 import 'package:cloud_firestore/cloud_firestore.dart' as _i974;
 import 'package:firebase_auth/firebase_auth.dart' as _i59;
 import 'package:get_it/get_it.dart' as _i174;
-import 'package:google_sign_in/google_sign_in.dart' as _i116;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:logger/logger.dart' as _i974;
+import 'package:pet/adopt_pet.dart' as _i852;
+import 'package:pet/data/datasource/local/storage.dart' as _i676;
+import 'package:pet/data/datasource/remote/firebase_api/auth_data_source/auth_data_source.dart'
+    as _i970;
+import 'package:pet/data/datasource/remote/firebase_api/auth_data_source/auth_data_source_impl.dart'
+    as _i935;
+import 'package:pet/data/repository_impl/authentication_repository.dart'
+    as _i563;
+import 'package:pet/di/modules/firebase.dart' as _i624;
+import 'package:pet/di/modules/logger.dart' as _i473;
+import 'package:pet/di/modules/shared_preferences_provider.dart' as _i922;
+import 'package:pet/domain/repository/authentication_repository.dart' as _i596;
+import 'package:pet/domain/services/snack_shower.dart' as _i735;
+import 'package:pet/domain/usecase/auth_usecase/get_user_usecase.dart' as _i670;
+import 'package:pet/domain/usecase/auth_usecase/sign_in_usecase.dart' as _i887;
+import 'package:pet/domain/usecase/auth_usecase/sign_out_usecase.dart' as _i173;
+import 'package:pet/domain/usecase/auth_usecase/sign_up_usecase.dart' as _i387;
+import 'package:pet/presentation/auth/login/cubit/login_cubit.dart' as _i160;
+import 'package:pet/presentation/blocs/authentication_cubit/authentication_cubit_provider.dart'
+    as _i609;
+import 'package:pet/presentation/navigation/navigation_key_provider.dart'
+    as _i886;
+import 'package:pet/presentation/navigation/router.dart' as _i601;
+import 'package:pet/services/snack_shower.dart' as _i800;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -67,71 +60,70 @@ extension GetItInjectableX on _i174.GetIt {
       () => sharedPreferencesProvider.provide(),
       preResolve: true,
     );
-    gh.lazySingleton<_i622.AppStorage>(
-      () => _i622.AppStorageImpl(
+    gh.singleton<_i886.INavigationKeyProvider>(
+      () => _i886.NavigationKeyProvider(),
+    );
+    gh.lazySingleton<_i676.AppStorage>(
+      () => _i676.AppStorageImpl(
         gh<_i460.SharedPreferences>(),
         gh<_i974.Logger>(),
       ),
     );
-    gh.singleton<_i758.INavigationKeyProvider>(
-      () => _i758.NavigationKeyProvider(),
-    );
-    gh.lazySingleton<_i464.AuthDataSource>(
-      () => _i315.FirebaseUserDataSource(
+    gh.lazySingleton<_i970.AuthDataSource>(
+      () => _i935.FirebaseUserDataSource(
         gh<_i59.FirebaseAuth>(),
         gh<_i974.FirebaseFirestore>(),
         gh<_i974.Logger>(),
-        gh<_i116.GoogleSignIn>(),
       ),
     );
-    gh.lazySingleton<_i123.ISnackShower>(
-      () => _i441.SnackShower(gh<_i758.INavigationKeyProvider>()),
+    gh.lazySingleton<_i735.ISnackShower>(
+      () => _i800.SnackShower(gh<_i886.INavigationKeyProvider>()),
     );
-    gh.lazySingleton<_i1065.NavigationRouter>(
-      () => _i1065.NavigationRouter(
-        gh<_i758.INavigationKeyProvider>(),
-        gh<_i622.AppStorage>(),
-        gh<_i123.ISnackShower>(),
+    gh.lazySingleton<_i596.AuthRepository>(
+      () => _i563.AuthRepositoryImpl(gh<_i970.AuthDataSource>()),
+    );
+    gh.lazySingleton<_i601.NavigationRouter>(
+      () => _i601.NavigationRouter(
+        gh<_i852.INavigationKeyProvider>(),
+        gh<_i852.AppStorage>(),
+        gh<_i852.ISnackShower>(),
       ),
     );
-    gh.lazySingleton<_i279.AuthRepository>(
-      () => _i613.AuthRepositoryImpl(gh<_i464.AuthDataSource>()),
+    gh.lazySingleton<_i670.GetUserUseCase>(
+      () => _i670.GetUserUseCase(gh<_i596.AuthRepository>()),
     );
-    gh.lazySingleton<_i1051.GetUserUseCase>(
-      () => _i1051.GetUserUseCase(gh<_i279.AuthRepository>()),
+    gh.lazySingleton<_i887.SignInUseCase>(
+      () => _i887.SignInUseCase(gh<_i596.AuthRepository>()),
     );
-    gh.lazySingleton<_i555.SignInUseCase>(
-      () => _i555.SignInUseCase(gh<_i279.AuthRepository>()),
+    gh.lazySingleton<_i173.SignOutUseCase>(
+      () => _i173.SignOutUseCase(gh<_i596.AuthRepository>()),
     );
-    gh.lazySingleton<_i706.SignOutUseCase>(
-      () => _i706.SignOutUseCase(gh<_i279.AuthRepository>()),
+    gh.lazySingleton<_i387.SignUpUseCase>(
+      () => _i387.SignUpUseCase(gh<_i596.AuthRepository>()),
     );
-    gh.lazySingleton<_i780.SignUpUseCase>(
-      () => _i780.SignUpUseCase(gh<_i279.AuthRepository>()),
-    );
-    await gh.singletonAsync<_i229.AuthenticationCubit>(
+    await gh.singletonAsync<_i852.AuthenticationCubit>(
       () => authenticationCubitProvider.provide(
-        gh<_i229.AppStorage>(),
-        gh<_i229.SignOutUseCase>(),
-        gh<_i229.GetUserUseCase>(),
-        gh<_i229.ISnackShower>(),
+        gh<_i852.AppStorage>(),
+        gh<_i852.SignOutUseCase>(),
+        gh<_i852.GetUserUseCase>(),
+        gh<_i852.ISnackShower>(),
       ),
       preResolve: true,
     );
-    gh.factory<_i521.LoginCubit>(
-      () => _i521.LoginCubit(
-        gh<_i229.SignInUseCase>(),
-        gh<_i229.AuthenticationCubit>(),
+    gh.factory<_i160.LoginCubit>(
+      () => _i160.LoginCubit(
+        gh<_i852.SignInUseCase>(),
+        gh<_i852.AuthenticationCubit>(),
       ),
     );
     return this;
   }
 }
 
-class _$FirebaseModule extends _i24.FirebaseModule {}
+class _$FirebaseModule extends _i624.FirebaseModule {}
 
-class _$LoggerModule extends _i454.LoggerModule {}
+class _$LoggerModule extends _i473.LoggerModule {}
 
-class _$SharedPreferencesProvider extends _i905.SharedPreferencesProvider {}
+class _$SharedPreferencesProvider extends _i922.SharedPreferencesProvider {}
 
-class _$AuthenticationCubitProvider extends _i724.AuthenticationCubitProvider {}
+class _$AuthenticationCubitProvider extends _i609.AuthenticationCubitProvider {}

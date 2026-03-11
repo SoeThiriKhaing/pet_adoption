@@ -29,8 +29,8 @@ class SurveySpark extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: $styles.light,
         darkTheme: $styles.light,
-        title: "Survey Spark",
-        // routerConfig: inject<NavigationRouter>().router,
+        title: "Pet Adoption",
+        routerConfig: inject<NavigationRouter>().router,
       ),
     );
   }
