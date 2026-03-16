@@ -31,7 +31,11 @@ import 'package:pet/domain/usecase/auth_usecase/get_user_usecase.dart' as _i670;
 import 'package:pet/domain/usecase/auth_usecase/sign_in_usecase.dart' as _i887;
 import 'package:pet/domain/usecase/auth_usecase/sign_out_usecase.dart' as _i173;
 import 'package:pet/domain/usecase/auth_usecase/sign_up_usecase.dart' as _i387;
+import 'package:pet/notification/firebase_notification_service.dart' as _i630;
+import 'package:pet/notification/local_notificaion_service.dart' as _i307;
 import 'package:pet/presentation/auth/login/cubit/login_cubit.dart' as _i160;
+import 'package:pet/presentation/auth/register/cubit/register_cubit.dart'
+    as _i17;
 import 'package:pet/presentation/blocs/authentication_cubit/authentication_cubit_provider.dart'
     as _i609;
 import 'package:pet/presentation/navigation/navigation_key_provider.dart'
@@ -51,6 +55,9 @@ extension GetItInjectableX on _i174.GetIt {
     final loggerModule = _$LoggerModule();
     final sharedPreferencesProvider = _$SharedPreferencesProvider();
     final authenticationCubitProvider = _$AuthenticationCubitProvider();
+    gh.singleton<_i307.LocalNotificationService>(
+      () => _i307.LocalNotificationService(),
+    );
     gh.lazySingleton<_i59.FirebaseAuth>(() => firebaseModule.firebaseAuth);
     gh.lazySingleton<_i974.FirebaseFirestore>(
       () => firebaseModule.firebaseFireStore,
@@ -59,6 +66,11 @@ extension GetItInjectableX on _i174.GetIt {
     await gh.lazySingletonAsync<_i460.SharedPreferences>(
       () => sharedPreferencesProvider.provide(),
       preResolve: true,
+    );
+    gh.singleton<_i630.FirebaseNotificationService>(
+      () => _i630.FirebaseNotificationService(
+        gh<_i307.LocalNotificationService>(),
+      ),
     );
     gh.singleton<_i886.INavigationKeyProvider>(
       () => _i886.NavigationKeyProvider(),
@@ -113,6 +125,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i160.LoginCubit>(
       () => _i160.LoginCubit(
         gh<_i852.SignInUseCase>(),
+        gh<_i852.AuthenticationCubit>(),
+      ),
+    );
+    gh.factory<_i17.RegisterCubit>(
+      () => _i17.RegisterCubit(
+        gh<_i852.SignUpUseCase>(),
         gh<_i852.AuthenticationCubit>(),
       ),
     );

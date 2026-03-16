@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../../adopt_pet.dart';
 
@@ -7,6 +8,7 @@ part 'register_state.dart';
 
 part 'register_cubit.freezed.dart';
 
+@injectable
 class RegisterCubit extends Cubit<RegisterState> {
   final SignUpUseCase _signUpUseCase;
   final AuthenticationCubit _auth;

@@ -13,8 +13,21 @@ extension NavigationExtension on BuildContext {
     selectTab(page);
   }
 
-  void goLogin() => go(LoginPage.routePath);
+  void goLogin({String? redirect}) {
+    if (redirect != null) {
+      go("${LoginPage.routePath}?redirectRoute=$redirect");
+    } else {
+      go(LoginPage.routePath);
+    }
+  }
 
+  void goRegister({String? redirect}) {
+    if (redirect != null) {
+      go("${RegisterPage.routePath}?redirectRoute=$redirect");
+    } else {
+      go(RegisterPage.routePath);
+    }
+  }
 
 
 }

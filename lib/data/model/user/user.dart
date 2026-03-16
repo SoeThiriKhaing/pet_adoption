@@ -12,7 +12,7 @@ abstract class UserModel with _$UserModel implements UserEntity {
   const factory UserModel({
     required String id,
     required String email,
-    required String name,
+    required String userName,
     String? profileUrl,
   }) = _UserModel;
 
@@ -23,7 +23,7 @@ abstract class UserModel with _$UserModel implements UserEntity {
     return UserModel(
       id: user.id,
       email: user.email,
-      name: user.name,
+      userName: user.userName,
       profileUrl: user.profileUrl,
     );
   }
@@ -32,7 +32,7 @@ abstract class UserModel with _$UserModel implements UserEntity {
     return UserModel(
       id: document.id,
       email: document.get('email'),
-      name: document.get('name'),
+      userName: document.get('userName'),
     );
   }
 }

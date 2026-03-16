@@ -40,7 +40,7 @@ class FirebaseUserDataSource implements AuthDataSource {
 
       return UserModel(
         id: firebaseUser.uid,
-        name: userName,
+        userName: userName,
         email: email,
       );
     } catch (e) {
