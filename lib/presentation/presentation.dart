@@ -10,3 +10,6 @@ export 'auth/register/register.dart';
 export 'auth/register/widget/ready.dart';
 export 'auth/register/cubit/register_cubit.dart';
 export 'index/index.dart';
+export 'admin/cubit/add_pet_cubit.dart';
+export 'admin/admin.dart';
+export 'admin/widget/ready.dart';

@@ -26,7 +26,7 @@ class NavigationRouter {
 
   static const mustAuthenticatedRoute = [
     IndexPage.routePath,
-    AddPetPage.routePath, // Admin page အတွက်ပါ ထည့်ထားပါ
+    AddPetHome.routePath, // Admin page အတွက်ပါ ထည့်ထားပါ
   ];
 
   late final router = GoRouter(
@@ -85,8 +85,8 @@ class NavigationRouter {
 
       // ၄။ Admin Add Pet Page - Root Level
       GoRoute(
-        path: AddPetPage.routePath, // "/admin-add-pet"
-        builder: (context, state) => const AddPetPage(),
+        path: AddPetHome.routePath, // "/admin-add-pet"
+        builder: (context, state) => const AddPetHome(),
       ),
     ],
   );

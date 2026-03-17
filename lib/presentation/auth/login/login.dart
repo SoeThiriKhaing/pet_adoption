@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pet/presentation/admin/admin.dart';
-
 import '../../../adopt_pet.dart';
 
 class LoginPage extends StatelessWidget {
@@ -34,7 +32,7 @@ class LoginPage extends StatelessWidget {
               final password = passwordController.text.trim();
 
               if (userEmail == "kuuki@gmail.com" && password == "123456") {
-                context.go(AddPetPage.routePath);
+                context.go(AddPetHome.routePath);
               } else {
                 context.goIndexAndSelectTab(0);
               }

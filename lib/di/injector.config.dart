@@ -20,8 +20,9 @@ import 'package:pet/data/datasource/remote/firebase_api/auth_data_source/auth_da
     as _i970;
 import 'package:pet/data/datasource/remote/firebase_api/auth_data_source/auth_data_source_impl.dart'
     as _i935;
-import 'package:pet/data/repository_impl/authentication_repository.dart'
-    as _i563;
+import 'package:pet/data/repository_impl/authentication_repo_impl.dart'
+    as _i867;
+import 'package:pet/data/repository_impl/pet_repo_impl.dart' as _i599;
 import 'package:pet/di/modules/firebase.dart' as _i624;
 import 'package:pet/di/modules/logger.dart' as _i473;
 import 'package:pet/di/modules/shared_preferences_provider.dart' as _i922;
@@ -31,8 +32,10 @@ import 'package:pet/domain/usecase/auth_usecase/get_user_usecase.dart' as _i670;
 import 'package:pet/domain/usecase/auth_usecase/sign_in_usecase.dart' as _i887;
 import 'package:pet/domain/usecase/auth_usecase/sign_out_usecase.dart' as _i173;
 import 'package:pet/domain/usecase/auth_usecase/sign_up_usecase.dart' as _i387;
+import 'package:pet/domain/usecase/pet_usecase/add_pet_usecase.dart' as _i263;
 import 'package:pet/notification/firebase_notification_service.dart' as _i630;
 import 'package:pet/notification/local_notificaion_service.dart' as _i307;
+import 'package:pet/presentation/admin/cubit/add_pet_cubit.dart' as _i307;
 import 'package:pet/presentation/auth/login/cubit/login_cubit.dart' as _i160;
 import 'package:pet/presentation/auth/register/cubit/register_cubit.dart'
     as _i17;
@@ -81,6 +84,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i974.Logger>(),
       ),
     );
+    gh.lazySingleton<_i852.PetRepository>(
+      () => _i599.PetRepoImpl(gh<_i974.FirebaseFirestore>()),
+    );
     gh.lazySingleton<_i970.AuthDataSource>(
       () => _i935.FirebaseUserDataSource(
         gh<_i59.FirebaseAuth>(),
@@ -91,15 +97,21 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i735.ISnackShower>(
       () => _i800.SnackShower(gh<_i886.INavigationKeyProvider>()),
     );
-    gh.lazySingleton<_i596.AuthRepository>(
-      () => _i563.AuthRepositoryImpl(gh<_i970.AuthDataSource>()),
-    );
     gh.lazySingleton<_i601.NavigationRouter>(
       () => _i601.NavigationRouter(
         gh<_i852.INavigationKeyProvider>(),
         gh<_i852.AppStorage>(),
         gh<_i852.ISnackShower>(),
       ),
+    );
+    gh.lazySingleton<_i263.AddPetUseCase>(
+      () => _i263.AddPetUseCase(gh<_i852.PetRepository>()),
+    );
+    gh.factory<_i307.AddPetCubit>(
+      () => _i307.AddPetCubit(gh<_i852.AddPetUseCase>()),
+    );
+    gh.lazySingleton<_i852.AuthRepository>(
+      () => _i867.AuthRepositoryImpl(gh<_i852.AuthDataSource>()),
     );
     gh.lazySingleton<_i670.GetUserUseCase>(
       () => _i670.GetUserUseCase(gh<_i596.AuthRepository>()),
