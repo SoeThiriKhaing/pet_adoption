@@ -13,3 +13,4 @@ export 'index/index.dart';
 export 'admin/cubit/add_pet_cubit.dart';
 export 'admin/admin.dart';
 export 'admin/widget/ready.dart';
+export 'profile/profile.dart';

@@ -1,0 +1,30 @@
+{
+  "app_title": "PetMe Adoption",
+  "search_pet": "Search for a pet...",
+  "categories": "Categories",
+  "dogs": "Dogs",
+  "cats": "Cats",
+  "all": "All",
+  "pet_details": "Pet Details",
+  "age": "Age",
+  "gender": "Gender",
+  "weight": "Weight",
+  "location": "Location",
+  "about_me": "About Me",
+  "adopt_now": "Adopt Now",
+  "owner": "Owner",
+  "status_available": "Available",
+  "status_adopted": "Adopted",
+  "years": "Years",
+  "months": "Months",
+  "male": "Male",
+  "female": "Female",
+  "success_message": "Thank you! Your adoption request has been sent.",
+  "log_out": "Logout",
+  "change_language": "Change Language",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "confirm-exit" : "Are you sure?"
+
+
+}

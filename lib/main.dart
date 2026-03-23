@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,17 +8,24 @@ import 'presentation/presentation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp();
   await configureDependencies();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  runApp(const SurveySpark());
+  runApp( EasyLocalization(supportedLocales: [
+    Locale('en','US'),
+    Locale('my','MM'),
+    Locale('ja','JP'),
+  ], path: 'assets/languages',
+  fallbackLocale: const Locale('en','US'),
+  child: PetAdoption()));
 }
 
-class SurveySpark extends StatelessWidget {
-  const SurveySpark({super.key});
+class PetAdoption extends StatelessWidget {
+  const PetAdoption({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +37,9 @@ class SurveySpark extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: $styles.light,
         darkTheme: $styles.light,
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
         title: "Pet Adoption",
         routerConfig: inject<NavigationRouter>().router,
       ),
