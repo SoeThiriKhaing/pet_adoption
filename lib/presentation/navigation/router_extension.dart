@@ -29,5 +29,7 @@ extension NavigationExtension on BuildContext {
     }
   }
 
+  void pushLogin()=>push(LoginPage.routePath);
+
 
 }

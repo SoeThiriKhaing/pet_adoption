@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:go_router/go_router.dart';
 import '../../adopt_pet.dart';
-import '../admin/admin.dart'; // သင့် core imports များ
 
 @lazySingleton
 class NavigationRouter {
@@ -19,14 +18,14 @@ class NavigationRouter {
       _useIndexPageNavigator!;
 
   NavigationRouter(
-      this._navigationKeyProvider,
-      this._storage,
-      this._snackShower,
-      );
+    this._navigationKeyProvider,
+    this._storage,
+    this._snackShower,
+  );
 
   static const mustAuthenticatedRoute = [
     IndexPage.routePath,
-    AddPetHome.routePath, // Admin page အတွက်ပါ ထည့်ထားပါ
+    AddPetHome.routePath,
   ];
 
   late final router = GoRouter(
@@ -45,12 +44,12 @@ class NavigationRouter {
       return null;
     },
     routes: [
-      // ၁။ Index Page (Home) - Root Level
       GoRoute(
         onExit: _handleDoubleTapToExit,
         path: IndexPage.routePath, // "/"
         builder: (context, state) {
-          final tabIndex = int.tryParse(state.uri.queryParameters['tab'] ?? '') ?? 0;
+          final tabIndex =
+              int.tryParse(state.uri.queryParameters['tab'] ?? '') ?? 0;
           return IndexPage(
             onIndexChanged: (index) => _currentIndex = index,
             initialTab: tabIndex,
@@ -59,7 +58,6 @@ class NavigationRouter {
         },
       ),
 
-      // ၂။ Login Page - Root Level (Nested routes ထဲက ထုတ်လိုက်ပါ)
       GoRoute(
         path: LoginPage.routePath, // "/login-home"
         builder: (context, state) {
@@ -71,7 +69,6 @@ class NavigationRouter {
         },
       ),
 
-      // ၃။ Register Page - Root Level
       GoRoute(
         path: RegisterPage.routePath, // "/register"
         builder: (context, state) {
@@ -83,23 +80,27 @@ class NavigationRouter {
         },
       ),
 
-      // ၄။ Admin Add Pet Page - Root Level
       GoRoute(
-        path: AddPetHome.routePath, // "/admin-add-pet"
+        path: AddPetHome.routePath,
         builder: (context, state) => const AddPetHome(),
       ),
     ],
   );
 
   DateTime? currentBackPressTime;
-  Future<bool> _handleDoubleTapToExit(BuildContext context, GoRouterState state) async {
+
+  Future<bool> _handleDoubleTapToExit(
+    BuildContext context,
+    GoRouterState state,
+  ) async {
     final selectIndex = _useIndexPageNavigator!();
     if (_currentIndex != null && _currentIndex != 0) {
       selectIndex(0);
       return false;
     }
     final now = DateTime.now();
-    if (currentBackPressTime == null || now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
+    if (currentBackPressTime == null ||
+        now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
       currentBackPressTime = now;
       _snackShower.info(message: "Press again to exit app");
       return false;

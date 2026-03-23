@@ -1,5 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pet/adopt_pet.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -11,6 +13,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
@@ -200,7 +203,9 @@ class _ProfilePageState extends State<ProfilePage> {
         actions: [
           TextButton(onPressed: () => Navigator.pop(ctx), child: Text(context.tr('cancel'))),
           TextButton(
-            onPressed: () => Navigator.pop(ctx),
+            onPressed:context.read<AuthenticationCubit>().logOut,
+
+
             child: Text(context.tr('confirm'), style: const TextStyle(color: Colors.red)),
           ),
         ],
