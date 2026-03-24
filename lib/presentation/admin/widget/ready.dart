@@ -56,6 +56,7 @@ class _AddPetFormState extends State<AddPetForm> {
             ),
             const SizedBox(height: 8),
             TextFormField(
+
               controller: _nameController,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
