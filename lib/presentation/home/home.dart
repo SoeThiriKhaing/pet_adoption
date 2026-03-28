@@ -1,104 +1,59 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import '../../../adopt_pet.dart'; // သင့် project imports
-//
-// class HomePage extends StatefulWidget {
-//   const HomePage({super.key});
-//
-//   @override
-//   State<HomePage> createState() => _HomePageState();
-// }
-//
-// class _HomePageState extends State<HomePage> {
-//   String selectedCategory = 'Dog'; // Default category
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Find Your Best Friend'),
-//         actions: [
-//           IconButton(
-//             onPressed: () => context.read<AuthenticationCubit>().logOut(),
-//             icon: const Icon(Icons.logout),
-//           )
-//         ],
-//       ),
-//       body: Column(
-//         children: [
-//           // Category Selection
-//           Padding(
-//             padding: const EdgeInsets.all(16.0),
-//             child: Row(
-//               children: [
-//                 _buildCategoryChip('Dog', Icons.pets),
-//                 const SizedBox(width: 12),
-//                 _buildCategoryChip('Cat', Icons.catching_pokemon),
-//               ],
-//             ),
-//           ),
-//
-//           // Pet List Area
-//           Expanded(
-//             child: BlocBuilder<PetListCubit, PetListState>(
-//               builder: (context, state) {
-//                 return state.maybeWhen(
-//                   loading: () => const Center(child: CircularProgressIndicator()),
-//                   success: (allPets) {
-//                     final filteredPets = allPets
-//                         .where((pet) => pet.category == selectedCategory)
-//                         .toList();
-//
-//                     if (filteredPets.isEmpty) {
-//                       return Center(child: Text('No $selectedCategory found!'));
-//                     }
-//
-//                     return ListView.builder(
-//                       itemCount: filteredPets.length,
-//                       itemBuilder: (context, index) {
-//                         final pet = filteredPets[index];
-//                         return _buildPetCard(pet);
-//                       },
-//                     );
-//                   },
-//                   error: (msg) => Center(child: Text(msg)),
-//                   orElse: () => const SizedBox(),
-//                 );
-//               },
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-//
-//   Widget _buildCategoryChip(String label, IconData icon) {
-//     final isSelected = selectedCategory == label;
-//     return GestureDetector(
-//       onTap: () => setState(() => selectedCategory = label),
-//       child: Chip(
-//         avatar: Icon(icon, color: isSelected ? Colors.white : Colors.grey),
-//         label: Text(label),
-//         backgroundColor: isSelected ? Colors.orange : Colors.grey[200],
-//         labelStyle: TextStyle(color: isSelected ? Colors.white : Colors.black),
-//       ),
-//     );
-//   }
-//
-//   Widget _buildPetCard(PetModel pet) {
-//     return Card(
-//       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-//       child: ListTile(
-//         leading: CircleAvatar(
-//           backgroundImage: NetworkImage(pet.imageUrl),
-//         ),
-//         title: Text(pet.name),
-//         subtitle: Text('${pet.breed} • ${pet.age} years old'),
-//         trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-//         onTap: () {
-//           // Pet Detail သို့သွားရန်
-//         },
-//       ),
-//     );
-//   }
-// }
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pet/adopt_pet.dart';
+import 'cubit/home_cubit.dart';
+
+class PetHomePage extends StatelessWidget {
+  const PetHomePage({super.key});
+
+  static const String routeName = "pet-home";
+  static const String routePath = "/$routeName";
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => inject<HomeCubit>()..fetchPets('All'),
+      child: const HomeView(),
+    );
+  }
+}
+
+class HomeView extends StatelessWidget {
+  const HomeView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Adopt a Friend"), centerTitle: true),
+      body: Column(
+        children: [
+          const CategoryBar(),
+          Expanded(
+            child: BlocBuilder<HomeCubit, HomeState>(
+              builder: (context, state) {
+                return state.when(
+                  initial: () => const Center(child: CircularProgressIndicator()),
+                  error: (message) => Center(child: Text("Error")),
+                  ready: (pets, selectedCategory) {
+                    if (pets.isEmpty) return const Center(child: Text("No pets available."));
+
+                    return ListView.builder(
+                      padding: const EdgeInsets.all(15),
+                      itemCount: pets.length,
+                      itemBuilder: (context, index) => PetCard(
+                        pet: pets[index],
+                        onTap: () {
+                          // TODO: Navigate to detail
+                        },
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

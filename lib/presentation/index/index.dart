@@ -28,7 +28,6 @@ class _IndexPageState extends State<IndexPage> {
     super.initState();
     _currentIndex = widget.initialTab;
 
-    // Router ကနေ လှမ်းခေါ်လို့ရအောင် callback ပြန်ပေးတာပါ
     widget.indexCallback(
       () => (int page) {
         setState(() {
@@ -82,12 +81,7 @@ class _IndexPageState extends State<IndexPage> {
   }
 }
 
-class PetHomePage extends StatelessWidget {
-  const PetHomePage({super.key});
 
-  @override
-  Widget build(BuildContext context) => const Center(child: Text("Home Page"));
-}
 
 class FavoritePage extends StatelessWidget {
   const FavoritePage({super.key});

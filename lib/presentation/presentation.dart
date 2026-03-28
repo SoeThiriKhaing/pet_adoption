@@ -14,3 +14,6 @@ export 'admin/cubit/add_pet_cubit.dart';
 export 'admin/admin.dart';
 export 'admin/widget/ready.dart';
 export 'profile/profile.dart';
+export 'home/home.dart';
+export 'home/widget/ready.dart';
+export 'home/cubit/home_cubit.dart';

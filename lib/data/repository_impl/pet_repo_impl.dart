@@ -14,4 +14,18 @@ class PetRepoImpl implements PetRepository {
     final docRef = await _firestore.collection('pets').add(model.toFirestore());
     return model.copyWith(id: docRef.id);
   }
-}
+
+  @override
+  Stream<List<PetEntity>> getPets(String? category) {
+    Query query = _firestore
+        .collection('pets')
+        .orderBy('createdAt', descending: true);
+    if (category != null && category != 'All') {
+      query = query.where('category', isEqualTo: category);
+    }
+      return query.snapshots().map((snapshot) {
+        return snapshot.docs.map((doc) => PetModel.fromFirebaseDocument(doc)).toList();
+      });
+    }
+  }
+
