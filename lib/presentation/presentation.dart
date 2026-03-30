@@ -17,3 +17,6 @@ export 'profile/profile.dart';
 export 'home/home.dart';
 export 'home/widget/ready.dart';
 export 'home/cubit/home_cubit.dart';
+export 'pet_detail/cubit/pet_detail_cubit.dart';
+export 'pet_detail/pet_detail.dart';
+export 'pet_detail/widget/ready.dart';

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 import 'package:pet/adopt_pet.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 @LazySingleton(as: PetRepository)
 class PetRepoImpl implements PetRepository {
@@ -27,5 +28,20 @@ class PetRepoImpl implements PetRepository {
         return snapshot.docs.map((doc) => PetModel.fromFirebaseDocument(doc)).toList();
       });
     }
+
+  @override
+  Future<void> contactAdminViaCall()async {
+    final Uri url = Uri.parse('tel:09698508375');
+    if (await canLaunchUrl(url)) await launchUrl(url);
+  }
+
+  @override
+  Future<void> contactAdminViaEmail(String petName)async {
+
+    final Uri url = Uri.parse(
+      'mailto:soethirikhaing846@gmail.com?subject=Adoption Inquiry: $petName&body=I am interested in $petName.',
+    );
+    if (await canLaunchUrl(url)) await launchUrl(url);
+  }
   }
 

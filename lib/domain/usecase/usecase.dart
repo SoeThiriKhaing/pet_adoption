@@ -5,3 +5,4 @@ export 'auth_usecase/sign_out_usecase.dart';
 export 'auth_usecase/sign_up_usecase.dart';
 export 'pet_usecase/add_pet_usecase.dart';
 export 'pet_usecase/get_pet_usecase.dart';
+export 'pet_usecase/contact_admin_usecase.dart';

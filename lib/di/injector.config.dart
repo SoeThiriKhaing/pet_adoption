@@ -33,6 +33,8 @@ import 'package:pet/domain/usecase/auth_usecase/sign_in_usecase.dart' as _i887;
 import 'package:pet/domain/usecase/auth_usecase/sign_out_usecase.dart' as _i173;
 import 'package:pet/domain/usecase/auth_usecase/sign_up_usecase.dart' as _i387;
 import 'package:pet/domain/usecase/pet_usecase/add_pet_usecase.dart' as _i263;
+import 'package:pet/domain/usecase/pet_usecase/contact_admin_usecase.dart'
+    as _i690;
 import 'package:pet/domain/usecase/pet_usecase/get_pet_usecase.dart' as _i289;
 import 'package:pet/notification/firebase_notification_service.dart' as _i630;
 import 'package:pet/notification/local_notificaion_service.dart' as _i307;
@@ -46,6 +48,8 @@ import 'package:pet/presentation/home/cubit/home_cubit.dart' as _i931;
 import 'package:pet/presentation/navigation/navigation_key_provider.dart'
     as _i886;
 import 'package:pet/presentation/navigation/router.dart' as _i601;
+import 'package:pet/presentation/pet_detail/cubit/pet_detail_cubit.dart'
+    as _i921;
 import 'package:pet/services/snack_shower.dart' as _i800;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
@@ -109,6 +113,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i263.AddPetUseCase>(
       () => _i263.AddPetUseCase(gh<_i852.PetRepository>()),
     );
+    gh.lazySingleton<_i690.ContactAdminUseCase>(
+      () => _i690.ContactAdminUseCase(gh<_i852.PetRepository>()),
+    );
     gh.lazySingleton<_i289.GetPetsUseCase>(
       () => _i289.GetPetsUseCase(gh<_i852.PetRepository>()),
     );
@@ -120,6 +127,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i852.AuthRepository>(
       () => _i867.AuthRepositoryImpl(gh<_i852.AuthDataSource>()),
+    );
+    gh.factory<_i921.PetDetailCubit>(
+      () => _i921.PetDetailCubit(gh<_i852.ContactAdminUseCase>()),
     );
     gh.lazySingleton<_i670.GetUserUseCase>(
       () => _i670.GetUserUseCase(gh<_i596.AuthRepository>()),

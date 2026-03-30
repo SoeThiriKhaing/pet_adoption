@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet/adopt_pet.dart';
-import 'cubit/home_cubit.dart';
 
 class PetHomePage extends StatelessWidget {
   const PetHomePage({super.key});
@@ -37,15 +36,25 @@ class HomeView extends StatelessWidget {
                   ready: (pets, selectedCategory) {
                     if (pets.isEmpty) return const Center(child: Text("No pets available."));
 
+                    debugPrint("Pets Length:${pets.length}");
                     return ListView.builder(
                       padding: const EdgeInsets.all(15),
                       itemCount: pets.length,
-                      itemBuilder: (context, index) => PetCard(
-                        pet: pets[index],
-                        onTap: () {
-                          // TODO: Navigate to detail
-                        },
-                      ),
+
+                      itemBuilder: (context, index) {
+                        final pet=pets[index];
+                      return  PetCard(
+                          pet: pet,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PetDetailPage(pet: pet),
+                              ),
+                            );
+                          },
+                        );
+                      }
                     );
                   },
                 );
