@@ -6,6 +6,7 @@ class PetEntity {
   final int age;
   final String imageUrl;
   final DateTime? createdAt;
+  final bool isFavorite;
 
   PetEntity({
     required this.id,
@@ -15,6 +16,7 @@ class PetEntity {
     required this.age,
     required this.imageUrl,
     required this.createdAt,
+    this.isFavorite=false,
   });
 
 }

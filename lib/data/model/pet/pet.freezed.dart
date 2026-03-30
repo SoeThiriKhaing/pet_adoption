@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PetModel {
 
- String get id; String get name; String get category; String get breed; int get age; String get imageUrl; DateTime? get createdAt;
+ String get id; String get name; String get category; String get breed; int get age; String get imageUrl; DateTime? get createdAt; bool get isFavorite;
 /// Create a copy of PetModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $PetModelCopyWith<PetModel> get copyWith => _$PetModelCopyWithImpl<PetModel>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PetModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.category, category) || other.category == category)&&(identical(other.breed, breed) || other.breed == breed)&&(identical(other.age, age) || other.age == age)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PetModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.category, category) || other.category == category)&&(identical(other.breed, breed) || other.breed == breed)&&(identical(other.age, age) || other.age == age)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.isFavorite, isFavorite) || other.isFavorite == isFavorite));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,category,breed,age,imageUrl,createdAt);
+int get hashCode => Object.hash(runtimeType,id,name,category,breed,age,imageUrl,createdAt,isFavorite);
 
 @override
 String toString() {
-  return 'PetModel(id: $id, name: $name, category: $category, breed: $breed, age: $age, imageUrl: $imageUrl, createdAt: $createdAt)';
+  return 'PetModel(id: $id, name: $name, category: $category, breed: $breed, age: $age, imageUrl: $imageUrl, createdAt: $createdAt, isFavorite: $isFavorite)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $PetModelCopyWith<$Res>  {
   factory $PetModelCopyWith(PetModel value, $Res Function(PetModel) _then) = _$PetModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, String category, String breed, int age, String imageUrl, DateTime? createdAt
+ String id, String name, String category, String breed, int age, String imageUrl, DateTime? createdAt, bool isFavorite
 });
 
 
@@ -65,7 +65,7 @@ class _$PetModelCopyWithImpl<$Res>
 
 /// Create a copy of PetModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? category = null,Object? breed = null,Object? age = null,Object? imageUrl = null,Object? createdAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? category = null,Object? breed = null,Object? age = null,Object? imageUrl = null,Object? createdAt = freezed,Object? isFavorite = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -74,7 +74,8 @@ as String,breed: null == breed ? _self.breed : breed // ignore: cast_nullable_to
 as String,age: null == age ? _self.age : age // ignore: cast_nullable_to_non_nullable
 as int,imageUrl: null == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
 as String,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as DateTime?,isFavorite: null == isFavorite ? _self.isFavorite : isFavorite // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -159,10 +160,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String category,  String breed,  int age,  String imageUrl,  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String category,  String breed,  int age,  String imageUrl,  DateTime? createdAt,  bool isFavorite)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PetModel() when $default != null:
-return $default(_that.id,_that.name,_that.category,_that.breed,_that.age,_that.imageUrl,_that.createdAt);case _:
+return $default(_that.id,_that.name,_that.category,_that.breed,_that.age,_that.imageUrl,_that.createdAt,_that.isFavorite);case _:
   return orElse();
 
 }
@@ -180,10 +181,10 @@ return $default(_that.id,_that.name,_that.category,_that.breed,_that.age,_that.i
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String category,  String breed,  int age,  String imageUrl,  DateTime? createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String category,  String breed,  int age,  String imageUrl,  DateTime? createdAt,  bool isFavorite)  $default,) {final _that = this;
 switch (_that) {
 case _PetModel():
-return $default(_that.id,_that.name,_that.category,_that.breed,_that.age,_that.imageUrl,_that.createdAt);case _:
+return $default(_that.id,_that.name,_that.category,_that.breed,_that.age,_that.imageUrl,_that.createdAt,_that.isFavorite);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -200,10 +201,10 @@ return $default(_that.id,_that.name,_that.category,_that.breed,_that.age,_that.i
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String category,  String breed,  int age,  String imageUrl,  DateTime? createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String category,  String breed,  int age,  String imageUrl,  DateTime? createdAt,  bool isFavorite)?  $default,) {final _that = this;
 switch (_that) {
 case _PetModel() when $default != null:
-return $default(_that.id,_that.name,_that.category,_that.breed,_that.age,_that.imageUrl,_that.createdAt);case _:
+return $default(_that.id,_that.name,_that.category,_that.breed,_that.age,_that.imageUrl,_that.createdAt,_that.isFavorite);case _:
   return null;
 
 }
@@ -215,7 +216,7 @@ return $default(_that.id,_that.name,_that.category,_that.breed,_that.age,_that.i
 @JsonSerializable()
 
 class _PetModel implements PetModel {
-  const _PetModel({required this.id, required this.name, required this.category, required this.breed, required this.age, required this.imageUrl, required this.createdAt});
+  const _PetModel({required this.id, required this.name, required this.category, required this.breed, required this.age, required this.imageUrl, required this.createdAt, this.isFavorite = false});
   factory _PetModel.fromJson(Map<String, dynamic> json) => _$PetModelFromJson(json);
 
 @override final  String id;
@@ -225,6 +226,7 @@ class _PetModel implements PetModel {
 @override final  int age;
 @override final  String imageUrl;
 @override final  DateTime? createdAt;
+@override@JsonKey() final  bool isFavorite;
 
 /// Create a copy of PetModel
 /// with the given fields replaced by the non-null parameter values.
@@ -239,16 +241,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PetModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.category, category) || other.category == category)&&(identical(other.breed, breed) || other.breed == breed)&&(identical(other.age, age) || other.age == age)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PetModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.category, category) || other.category == category)&&(identical(other.breed, breed) || other.breed == breed)&&(identical(other.age, age) || other.age == age)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.isFavorite, isFavorite) || other.isFavorite == isFavorite));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,category,breed,age,imageUrl,createdAt);
+int get hashCode => Object.hash(runtimeType,id,name,category,breed,age,imageUrl,createdAt,isFavorite);
 
 @override
 String toString() {
-  return 'PetModel(id: $id, name: $name, category: $category, breed: $breed, age: $age, imageUrl: $imageUrl, createdAt: $createdAt)';
+  return 'PetModel(id: $id, name: $name, category: $category, breed: $breed, age: $age, imageUrl: $imageUrl, createdAt: $createdAt, isFavorite: $isFavorite)';
 }
 
 
@@ -259,7 +261,7 @@ abstract mixin class _$PetModelCopyWith<$Res> implements $PetModelCopyWith<$Res>
   factory _$PetModelCopyWith(_PetModel value, $Res Function(_PetModel) _then) = __$PetModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, String category, String breed, int age, String imageUrl, DateTime? createdAt
+ String id, String name, String category, String breed, int age, String imageUrl, DateTime? createdAt, bool isFavorite
 });
 
 
@@ -276,7 +278,7 @@ class __$PetModelCopyWithImpl<$Res>
 
 /// Create a copy of PetModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? category = null,Object? breed = null,Object? age = null,Object? imageUrl = null,Object? createdAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? category = null,Object? breed = null,Object? age = null,Object? imageUrl = null,Object? createdAt = freezed,Object? isFavorite = null,}) {
   return _then(_PetModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -285,7 +287,8 @@ as String,breed: null == breed ? _self.breed : breed // ignore: cast_nullable_to
 as String,age: null == age ? _self.age : age // ignore: cast_nullable_to_non_nullable
 as int,imageUrl: null == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
 as String,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as DateTime?,isFavorite: null == isFavorite ? _self.isFavorite : isFavorite // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

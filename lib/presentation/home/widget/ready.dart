@@ -81,7 +81,15 @@ class PetCard extends StatelessWidget {
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
         subtitle: Text("${pet.breed} • ${pet.age} Years"),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 14),
+        trailing: IconButton(
+          icon: Icon(
+            pet.isFavorite ? Icons.favorite : Icons.favorite_border,
+            color: pet.isFavorite ? Colors.red : Colors.grey,
+          ),
+          onPressed: () {
+            context.read<HomeCubit>().toggleFavorite(pet.id, !pet.isFavorite);
+          },
+        ),
         onTap: onTap,
       ),
     );

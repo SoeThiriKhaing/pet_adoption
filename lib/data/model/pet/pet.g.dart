@@ -16,6 +16,7 @@ _PetModel _$PetModelFromJson(Map<String, dynamic> json) => _PetModel(
   createdAt: json['createdAt'] == null
       ? null
       : DateTime.parse(json['createdAt'] as String),
+  isFavorite: json['isFavorite'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$PetModelToJson(_PetModel instance) => <String, dynamic>{
@@ -26,4 +27,5 @@ Map<String, dynamic> _$PetModelToJson(_PetModel instance) => <String, dynamic>{
   'age': instance.age,
   'imageUrl': instance.imageUrl,
   'createdAt': instance.createdAt?.toIso8601String(),
+  'isFavorite': instance.isFavorite,
 };

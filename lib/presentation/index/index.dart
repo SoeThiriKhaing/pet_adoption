@@ -40,7 +40,6 @@ class _IndexPageState extends State<IndexPage> {
   final List<Widget> _pages = [
     const PetHomePage(),
     const FavoritePage(),
-    const FavoritePage(),
     const ProfilePage(),
   ];
 
@@ -66,10 +65,6 @@ class _IndexPageState extends State<IndexPage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite_border),
             label: 'Favorites',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle_outline),
-            label: 'Add Pet',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),

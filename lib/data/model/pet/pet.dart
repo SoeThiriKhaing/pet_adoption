@@ -15,12 +15,13 @@ abstract class PetModel with _$PetModel implements PetEntity {
     required int age,
     required String imageUrl,
     required DateTime? createdAt,
+    @Default(false) bool isFavorite,
   }) = _PetModel;
 
   factory PetModel.fromJson(Map<String, dynamic> json) =>
       _$PetModelFromJson(json);
 
-  factory PetModel.fromFirebaseDocument(DocumentSnapshot document) {
+  factory PetModel.fromFirebaseDocument(DocumentSnapshot document, {required bool isFavorite}) {
     final data = document.data() as Map<String, dynamic>?;
 
     return PetModel(
@@ -31,6 +32,7 @@ abstract class PetModel with _$PetModel implements PetEntity {
       age: data?['age'] ?? 0,
       imageUrl: data?['imageUrl'] ?? '',
       createdAt: (data?['createdAt'] as Timestamp?)?.toDate(),
+      isFavorite: data?['isFavorite'] ?? false,
     );
   }
 
@@ -43,6 +45,7 @@ abstract class PetModel with _$PetModel implements PetEntity {
       age: pet.age,
       imageUrl: pet.imageUrl,
       createdAt: pet.createdAt,
+      isFavorite: pet.isFavorite,
     );
   }
 }
@@ -56,6 +59,7 @@ extension PetModelX on PetModel {
       'age': age,
       'imageUrl': imageUrl,
       'createdAt': createdAt != null ? Timestamp.fromDate(createdAt!) : FieldValue.serverTimestamp(),
+      'isFavorite': isFavorite,
     };
   }
 }

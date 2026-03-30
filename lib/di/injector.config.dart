@@ -22,6 +22,7 @@ import 'package:pet/data/datasource/remote/firebase_api/auth_data_source/auth_da
     as _i935;
 import 'package:pet/data/repository_impl/authentication_repo_impl.dart'
     as _i867;
+import 'package:pet/data/repository_impl/favorite_repo_impl.dart' as _i1049;
 import 'package:pet/data/repository_impl/pet_repo_impl.dart' as _i599;
 import 'package:pet/di/modules/firebase.dart' as _i624;
 import 'package:pet/di/modules/logger.dart' as _i473;
@@ -32,6 +33,8 @@ import 'package:pet/domain/usecase/auth_usecase/get_user_usecase.dart' as _i670;
 import 'package:pet/domain/usecase/auth_usecase/sign_in_usecase.dart' as _i887;
 import 'package:pet/domain/usecase/auth_usecase/sign_out_usecase.dart' as _i173;
 import 'package:pet/domain/usecase/auth_usecase/sign_up_usecase.dart' as _i387;
+import 'package:pet/domain/usecase/favorite_usecase/toogle_fav_usecase.dart'
+    as _i254;
 import 'package:pet/domain/usecase/pet_usecase/add_pet_usecase.dart' as _i263;
 import 'package:pet/domain/usecase/pet_usecase/contact_admin_usecase.dart'
     as _i690;
@@ -90,8 +93,14 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i974.Logger>(),
       ),
     );
-    gh.lazySingleton<_i852.PetRepository>(
-      () => _i599.PetRepoImpl(gh<_i974.FirebaseFirestore>()),
+    gh.lazySingleton<_i852.FavoriteRepository>(
+      () => _i1049.FavoriteRepoImpl(
+        gh<_i974.FirebaseFirestore>(),
+        gh<_i59.FirebaseAuth>(),
+      ),
+    );
+    gh.lazySingleton<_i254.ToggleFavoriteUseCase>(
+      () => _i254.ToggleFavoriteUseCase(gh<_i852.FavoriteRepository>()),
     );
     gh.lazySingleton<_i970.AuthDataSource>(
       () => _i935.FirebaseUserDataSource(
@@ -102,6 +111,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i735.ISnackShower>(
       () => _i800.SnackShower(gh<_i886.INavigationKeyProvider>()),
+    );
+    gh.lazySingleton<_i852.PetRepository>(
+      () => _i599.PetRepoImpl(
+        gh<_i974.FirebaseFirestore>(),
+        gh<_i59.FirebaseAuth>(),
+      ),
     );
     gh.lazySingleton<_i601.NavigationRouter>(
       () => _i601.NavigationRouter(
@@ -122,14 +137,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i307.AddPetCubit>(
       () => _i307.AddPetCubit(gh<_i852.AddPetUseCase>()),
     );
-    gh.factory<_i931.HomeCubit>(
-      () => _i931.HomeCubit(gh<_i852.GetPetsUseCase>()),
-    );
     gh.lazySingleton<_i852.AuthRepository>(
       () => _i867.AuthRepositoryImpl(gh<_i852.AuthDataSource>()),
     );
     gh.factory<_i921.PetDetailCubit>(
       () => _i921.PetDetailCubit(gh<_i852.ContactAdminUseCase>()),
+    );
+    gh.factory<_i931.HomeCubit>(
+      () => _i931.HomeCubit(
+        gh<_i852.GetPetsUseCase>(),
+        gh<_i852.ToggleFavoriteUseCase>(),
+      ),
     );
     gh.lazySingleton<_i670.GetUserUseCase>(
       () => _i670.GetUserUseCase(gh<_i596.AuthRepository>()),

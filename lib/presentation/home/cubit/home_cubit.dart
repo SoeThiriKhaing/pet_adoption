@@ -12,8 +12,9 @@ part 'home_cubit.freezed.dart';
 @injectable
 class HomeCubit extends Cubit<HomeState> {
   final GetPetsUseCase _getPetsUseCase;
+  final ToggleFavoriteUseCase _toggleFavoriteUseCase;
   StreamSubscription? _subscription;
-  HomeCubit(this._getPetsUseCase) : super(const HomeInitial());
+  HomeCubit(this._getPetsUseCase,this._toggleFavoriteUseCase) : super(const HomeInitial());
   void fetchPets(String category) {
     emit(HomeInitial());
 
@@ -27,6 +28,15 @@ class HomeCubit extends Cubit<HomeState> {
         emit(HomeState.error(message: error.toString()));
       },
     );
+  }
+
+  Future<void> toggleFavorite(String petId, bool isFavorite) async {
+    try {
+      await _toggleFavoriteUseCase(petId, isFavorite);
+
+    } catch (e) {
+      emit(HomeState.error(message: "Error in Cubit"));
+    }
   }
 
   @override
