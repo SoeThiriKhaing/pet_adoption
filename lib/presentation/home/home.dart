@@ -23,7 +23,20 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Adopt a Friend"), centerTitle: true),
+      backgroundColor: AppColors.clrWhite,
+      appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
+        toolbarHeight: 140,
+        iconTheme: const IconThemeData(color: Colors.white),
+        actions: [],
+        flexibleSpace: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.asset("assets/images/appbar/appb.png", fit: BoxFit.cover),
+          ],
+        ),
+      ),
       body: Column(
         children: [
           const CategoryBar(),
@@ -31,19 +44,20 @@ class HomeView extends StatelessWidget {
             child: BlocBuilder<HomeCubit, HomeState>(
               builder: (context, state) {
                 return state.when(
-                  initial: () => const Center(child: CircularProgressIndicator()),
+                  initial: () =>
+                      const Center(child: CircularProgressIndicator()),
                   error: (message) => Center(child: Text("Error")),
                   ready: (pets, selectedCategory) {
-                    if (pets.isEmpty) return const Center(child: Text("No pets available."));
+                    if (pets.isEmpty) {
+                      return const Center(child: Text("No pets available."));
+                    }
 
-                    debugPrint("Pets Length:${pets.length}");
                     return ListView.builder(
                       padding: const EdgeInsets.all(15),
                       itemCount: pets.length,
-
                       itemBuilder: (context, index) {
-                        final pet=pets[index];
-                      return  PetCard(
+                        final pet = pets[index];
+                        return PetCard(
                           pet: pet,
                           onTap: () {
                             Navigator.push(
@@ -54,7 +68,7 @@ class HomeView extends StatelessWidget {
                             );
                           },
                         );
-                      }
+                      },
                     );
                   },
                 );

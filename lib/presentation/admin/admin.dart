@@ -12,36 +12,67 @@ class AddPetHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final auth=context.read<AuthenticationCubit>();
+    final auth = context.read<AuthenticationCubit>();
+
     return BlocProvider(
       create: (context) => inject<AddPetCubit>(),
       child: Scaffold(
+        backgroundColor: AppColors.clrWhite,
         appBar: AppBar(
-          title: const Text("Add New Pet"),
+          elevation: 0,
+          centerTitle: true,
+          toolbarHeight: 140,
+          iconTheme: const IconThemeData(color: Colors.white),
           actions: [
-            IconButton(onPressed:auth.logOut, icon: Icon(Icons.logout))
+            IconButton(
+              onPressed: auth.logOut,
+              icon: const Icon(Icons.logout_rounded, color: Colors.white),
+            ),
           ],
+          flexibleSpace: Stack(
+            fit: StackFit.expand,
+            children: [
+              Image.asset(
+                "assets/images/appbar/appb.png",
+                fit: BoxFit
+                    .cover, // 6. Forces the image to fill the entire header area without warping
+              ),
+            ],
+          ),
         ),
         body: BlocConsumer<AddPetCubit, AddPetState>(
           listener: (context, state) {
             state.whenOrNull(
               success: () {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Pet added successfully!")),
+                  SnackBar(
+                    content: const Text("✨ Pet added successfully!"),
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
                 );
                 context.pop();
               },
               error: (message) => ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(message), backgroundColor: Colors.red),
+                SnackBar(
+                  content: Text(message),
+                  backgroundColor: Colors.redAccent,
+                  behavior: SnackBarBehavior.floating,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
               ),
             );
           },
           builder: (context, state) {
             return state.maybeWhen(
-              loading: () => const Center(child: CircularProgressIndicator()),
-              orElse: () => AddPetForm(
-                bloc: context.read<AddPetCubit>(),
+              loading: () => const Center(
+                child: CircularProgressIndicator(color: AppColors.clrPrimary),
               ),
+              orElse: () => AddPetForm(bloc: context.read<AddPetCubit>()),
             );
           },
         ),

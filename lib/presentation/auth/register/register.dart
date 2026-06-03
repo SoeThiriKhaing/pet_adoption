@@ -121,6 +121,13 @@ class RegisterPage extends StatelessWidget {
 
                 const SizedBox(height: 16),
 
+                GestureDetector(
+                  onTap: ()=>context.go(LoginPage.routePath),
+                  child: Text("Login",style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),),
+                ),
+
                 TextButton(
                   onPressed: () => context.pop(),
                   child: const Text("Already have an account? Login"),

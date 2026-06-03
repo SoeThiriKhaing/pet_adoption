@@ -58,7 +58,7 @@ class _IndexPageState extends State<IndexPage> {
         currentIndex: _currentIndex,
         onTap: _onTabTapped,
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: Theme.of(context).primaryColor,
+        selectedItemColor: AppColors.clrPurple,
         unselectedItemColor: Colors.grey,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.pets), label: 'Adopt'),
@@ -76,15 +76,30 @@ class _IndexPageState extends State<IndexPage> {
   }
 }
 
-
-
 class FavoritePage extends StatelessWidget {
   const FavoritePage({super.key});
 
   @override
-  Widget build(BuildContext context) =>
-      const Center(child: Text("Favorite Page"));
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor:Colors.deepPurple.shade50,
+      appBar: AppBar(
+        elevation: 0,
+        toolbarHeight: 80,
+        centerTitle: true,
+        iconTheme: const IconThemeData(color: Colors.white),
+
+        flexibleSpace: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.asset(
+              "assets/images/appbar/app.png",
+              fit: BoxFit
+                  .cover, // 6. Forces the image to fill the entire header area without warping
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
-
-
-

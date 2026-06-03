@@ -15,14 +15,23 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: AppColors.clrWhite,
       appBar: AppBar(
-        // JSON key: "profile"
-        title: Text(context.tr('profile')),
-        centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+        centerTitle: true,
+        toolbarHeight: 140,
+        iconTheme: const IconThemeData(color: Colors.white),
+        actions: [],
+        flexibleSpace: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.asset(
+              "assets/images/appbar/appb.png",
+              fit: BoxFit
+                  .cover, // 6. Forces the image to fill the entire header area without warping
+            ),
+          ],
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
