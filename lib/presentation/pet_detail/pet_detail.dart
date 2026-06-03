@@ -235,7 +235,7 @@ class _PetDetailView extends StatelessWidget {
                 child: const Icon(Icons.phone_rounded, color: Colors.green),
               ),
               title: const Text(
-                "Call Admin",
+                "Call",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               onTap: () {
