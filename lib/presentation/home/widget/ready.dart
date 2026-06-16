@@ -16,13 +16,13 @@ class _HomeReadyViewState extends State<HomeReadyView> {
   void initState() {
     super.initState();
     _pageController = PageController(
-      viewportFraction: 0.8 // Keeps side-cards peekable on screen edges
+      viewportFraction: 0.8
     );
   }
 
   @override
   void dispose() {
-    _pageController.dispose(); // Good practice to prevent memory leaks
+    _pageController.dispose();
     super.dispose();
   }
 
@@ -100,8 +100,6 @@ class _HomeReadyViewState extends State<HomeReadyView> {
                       if (pets.isEmpty) {
                         return const Center(child: Text("No pets available."));
                       }
-
-                      // Replaced ListView.builder with an AnimatedBuilder + PageView.builder
                       return AnimatedBuilder(
                         animation: _pageController,
                         builder: (context, child) {
@@ -109,13 +107,10 @@ class _HomeReadyViewState extends State<HomeReadyView> {
                             controller: _pageController,
                             itemCount: pets.length,
                             clipBehavior: Clip.none,
-                            // Allows the popping scale effect to breathe
                             itemBuilder: (context, index) {
-                              // Dynamic scale calculation based on drag progress
                               double scale = 1.0;
                               if (_pageController.position.haveDimensions) {
                                 double value = _pageController.page! - index;
-                                // In-focus card stays 1.0, out-of-focus scales down to 0.85
                                 scale = (1 - (value.abs() * 0.15)).clamp(
                                   0.85,
                                   1.0,
@@ -128,7 +123,6 @@ class _HomeReadyViewState extends State<HomeReadyView> {
                               return PetCard(
                                 pet: pet,
                                 scale: scale,
-                                // Remember to pass scale into your updated PetCard!
                                 onTap: () {
                                   Navigator.push(
                                     context,

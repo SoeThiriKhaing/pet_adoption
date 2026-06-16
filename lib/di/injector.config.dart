@@ -47,6 +47,7 @@ import 'package:pet/presentation/auth/register/cubit/register_cubit.dart'
     as _i17;
 import 'package:pet/presentation/blocs/authentication_cubit/authentication_cubit_provider.dart'
     as _i609;
+import 'package:pet/presentation/favourite/cubit/favorite_cubit.dart' as _i951;
 import 'package:pet/presentation/home/cubit/home_cubit.dart' as _i931;
 import 'package:pet/presentation/navigation/navigation_key_provider.dart'
     as _i886;
@@ -136,6 +137,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i307.AddPetCubit>(
       () => _i307.AddPetCubit(gh<_i852.AddPetUseCase>()),
+    );
+    gh.factory<_i951.FavoriteCubit>(
+      () => _i951.FavoriteCubit(gh<_i852.FavoriteRepository>()),
     );
     gh.lazySingleton<_i852.AuthRepository>(
       () => _i867.AuthRepositoryImpl(gh<_i852.AuthDataSource>()),

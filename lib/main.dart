@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pet/presentation/favourite/cubit/favorite_cubit.dart';
 import 'di/di.dart';
 import 'presentation/presentation.dart';
 
@@ -69,6 +70,7 @@ class PetAdoption extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => inject<AuthenticationCubit>()),
+        BlocProvider(create: (_)=>inject<FavoriteCubit>()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

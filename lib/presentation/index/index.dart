@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../adopt_pet.dart';
+import '../favourite/favourite.dart';
 
 class IndexPage extends StatefulWidget {
   final int initialTab;
@@ -39,7 +40,7 @@ class _IndexPageState extends State<IndexPage> {
 
   final List<Widget> _pages = [
     const PetHomePage(),
-    const FavoritePage(),
+    const FavouriteHomePage(),
     const ProfilePage(),
   ];
 

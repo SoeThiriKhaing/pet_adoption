@@ -55,13 +55,13 @@ extension FavoriteStatePatterns on FavoriteState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( FavoriteInitial value)?  initial,TResult Function( FavoriteReady value)?  ready,TResult Function( FavoriteSuccess value)?  success,TResult Function( FavoriteError value)?  error,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( FavoriteInitial value)?  initial,TResult Function( FavoriteLoading value)?  loading,TResult Function( FavoriteReady value)?  ready,TResult Function( FavoriteError value)?  error,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case FavoriteInitial() when initial != null:
-return initial(_that);case FavoriteReady() when ready != null:
-return ready(_that);case FavoriteSuccess() when success != null:
-return success(_that);case FavoriteError() when error != null:
+return initial(_that);case FavoriteLoading() when loading != null:
+return loading(_that);case FavoriteReady() when ready != null:
+return ready(_that);case FavoriteError() when error != null:
 return error(_that);case _:
   return orElse();
 
@@ -80,13 +80,13 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( FavoriteInitial value)  initial,required TResult Function( FavoriteReady value)  ready,required TResult Function( FavoriteSuccess value)  success,required TResult Function( FavoriteError value)  error,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( FavoriteInitial value)  initial,required TResult Function( FavoriteLoading value)  loading,required TResult Function( FavoriteReady value)  ready,required TResult Function( FavoriteError value)  error,}){
 final _that = this;
 switch (_that) {
 case FavoriteInitial():
-return initial(_that);case FavoriteReady():
-return ready(_that);case FavoriteSuccess():
-return success(_that);case FavoriteError():
+return initial(_that);case FavoriteLoading():
+return loading(_that);case FavoriteReady():
+return ready(_that);case FavoriteError():
 return error(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -104,13 +104,13 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( FavoriteInitial value)?  initial,TResult? Function( FavoriteReady value)?  ready,TResult? Function( FavoriteSuccess value)?  success,TResult? Function( FavoriteError value)?  error,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( FavoriteInitial value)?  initial,TResult? Function( FavoriteLoading value)?  loading,TResult? Function( FavoriteReady value)?  ready,TResult? Function( FavoriteError value)?  error,}){
 final _that = this;
 switch (_that) {
 case FavoriteInitial() when initial != null:
-return initial(_that);case FavoriteReady() when ready != null:
-return ready(_that);case FavoriteSuccess() when success != null:
-return success(_that);case FavoriteError() when error != null:
+return initial(_that);case FavoriteLoading() when loading != null:
+return loading(_that);case FavoriteReady() when ready != null:
+return ready(_that);case FavoriteError() when error != null:
 return error(_that);case _:
   return null;
 
@@ -128,12 +128,12 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  ready,TResult Function()?  success,TResult Function( String? error)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<PetEntity> pets)?  ready,TResult Function( String? error)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case FavoriteInitial() when initial != null:
-return initial();case FavoriteReady() when ready != null:
-return ready();case FavoriteSuccess() when success != null:
-return success();case FavoriteError() when error != null:
+return initial();case FavoriteLoading() when loading != null:
+return loading();case FavoriteReady() when ready != null:
+return ready(_that.pets);case FavoriteError() when error != null:
 return error(_that.error);case _:
   return orElse();
 
@@ -152,12 +152,12 @@ return error(_that.error);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  ready,required TResult Function()  success,required TResult Function( String? error)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<PetEntity> pets)  ready,required TResult Function( String? error)  error,}) {final _that = this;
 switch (_that) {
 case FavoriteInitial():
-return initial();case FavoriteReady():
-return ready();case FavoriteSuccess():
-return success();case FavoriteError():
+return initial();case FavoriteLoading():
+return loading();case FavoriteReady():
+return ready(_that.pets);case FavoriteError():
 return error(_that.error);case _:
   throw StateError('Unexpected subclass');
 
@@ -175,12 +175,12 @@ return error(_that.error);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  ready,TResult? Function()?  success,TResult? Function( String? error)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<PetEntity> pets)?  ready,TResult? Function( String? error)?  error,}) {final _that = this;
 switch (_that) {
 case FavoriteInitial() when initial != null:
-return initial();case FavoriteReady() when ready != null:
-return ready();case FavoriteSuccess() when success != null:
-return success();case FavoriteError() when error != null:
+return initial();case FavoriteLoading() when loading != null:
+return loading();case FavoriteReady() when ready != null:
+return ready(_that.pets);case FavoriteError() when error != null:
 return error(_that.error);case _:
   return null;
 
@@ -224,8 +224,8 @@ String toString() {
 /// @nodoc
 
 
-class FavoriteReady implements FavoriteState {
-  const FavoriteReady();
+class FavoriteLoading implements FavoriteState {
+  const FavoriteLoading();
   
 
 
@@ -235,7 +235,7 @@ class FavoriteReady implements FavoriteState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is FavoriteReady);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FavoriteLoading);
 }
 
 
@@ -244,7 +244,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'FavoriteState.ready()';
+  return 'FavoriteState.loading()';
 }
 
 
@@ -256,34 +256,74 @@ String toString() {
 /// @nodoc
 
 
-class FavoriteSuccess implements FavoriteState {
-  const FavoriteSuccess();
+class FavoriteReady implements FavoriteState {
+  const FavoriteReady({required final  List<PetEntity> pets}): _pets = pets;
   
 
+ final  List<PetEntity> _pets;
+ List<PetEntity> get pets {
+  if (_pets is EqualUnmodifiableListView) return _pets;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_pets);
+}
 
 
+/// Create a copy of FavoriteState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$FavoriteReadyCopyWith<FavoriteReady> get copyWith => _$FavoriteReadyCopyWithImpl<FavoriteReady>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is FavoriteSuccess);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FavoriteReady&&const DeepCollectionEquality().equals(other._pets, _pets));
 }
 
 
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_pets));
 
 @override
 String toString() {
-  return 'FavoriteState.success()';
+  return 'FavoriteState.ready(pets: $pets)';
 }
 
 
 }
 
+/// @nodoc
+abstract mixin class $FavoriteReadyCopyWith<$Res> implements $FavoriteStateCopyWith<$Res> {
+  factory $FavoriteReadyCopyWith(FavoriteReady value, $Res Function(FavoriteReady) _then) = _$FavoriteReadyCopyWithImpl;
+@useResult
+$Res call({
+ List<PetEntity> pets
+});
 
 
+
+
+}
+/// @nodoc
+class _$FavoriteReadyCopyWithImpl<$Res>
+    implements $FavoriteReadyCopyWith<$Res> {
+  _$FavoriteReadyCopyWithImpl(this._self, this._then);
+
+  final FavoriteReady _self;
+  final $Res Function(FavoriteReady) _then;
+
+/// Create a copy of FavoriteState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? pets = null,}) {
+  return _then(FavoriteReady(
+pets: null == pets ? _self._pets : pets // ignore: cast_nullable_to_non_nullable
+as List<PetEntity>,
+  ));
+}
+
+
+}
 
 /// @nodoc
 
