@@ -14,74 +14,101 @@ class FavouriteHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
-      appBar:  AppBar(
+      appBar: AppBar(
         elevation: 0,
         toolbarHeight: 80,
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.white),
-
         flexibleSpace: Stack(
           fit: StackFit.expand,
           children: [
             Image.asset(
               "assets/images/appbar/app.png",
-              fit: BoxFit
-                  .cover, // 6. Forces the image to fill the entire header area without warping
+              fit: BoxFit.cover,
             ),
           ],
         ),
       ),
-      body: BlocBuilder<FavoriteCubit, FavoriteState>(
-        builder: (context, state) {
-          return state.when(
-            initial: () => const Center(child: CircularProgressIndicator()),
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (message) => Center(child: Text("Error: $message")),
-            ready: (favoritePets) {
-              if (favoritePets.isEmpty) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.favorite_border_rounded, size: 70, color: Colors.grey.shade300),
-                      const SizedBox(height: 16),
-                      Text(
-                        "No favorites added yet",
-                        style: TextStyle(fontSize: 18, color: Colors.grey.shade500, fontWeight: FontWeight.w600),
-                      ),
-                    ],
-                  ),
-                );
-              }
+      body: Column(
+        children: [
+          const CategoryBar(),
 
-              // Perfect 2-Column Responsive Matrix Grid
-              return GridView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                itemCount: favoritePets.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,       // Forces exactly 2 structural columns
-                  mainAxisSpacing: 14,     // Vertical gap distance between cards
-                  crossAxisSpacing: 14,    // Horizontal gap distance between cards
-                  childAspectRatio: 0.78,  // card height proportion tuning wrapper index
-                ),
-                itemBuilder: (context, index) {
-                  final pet = favoritePets[index];
-                  return GridPetCard(
-                    pet: pet,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PetDetailPage(pet: pet),
+          // Wrap the BlocBuilder in an Expanded widget so the GridView doesn't crash the layout
+          Expanded(
+            child: BlocBuilder<FavoriteCubit, FavoriteState>(
+              builder: (context, favoriteState) {
+                return favoriteState.when(
+                  initial: () => const Center(child: CircularProgressIndicator()),
+                  loading: () => const Center(child: CircularProgressIndicator()),
+                  error: (message) => Center(child: Text("Error: $message")),
+                  ready: (favoritePets) {
+                    // --- REACTIVE CATEGORY FILTERING ---
+                    // 1. Get the currently active category from HomeCubit
+                    final selectedCategory = context.select(
+                          (HomeCubit cubit) => cubit.state is HomeReady
+                          ? (cubit.state as HomeReady).selectedCategory
+                          : 'All',
+                    );
+
+                    // 2. Filter your live favorite list locally based on selection
+                    final filteredPets = favoritePets.where((pet) {
+                      if (selectedCategory == 'All') return true;
+                      // Matches pet.category string (e.g., 'Dog' or 'Cat') ignoring case
+                      return pet.category.toLowerCase() == selectedCategory.toLowerCase();
+                    }).toList();
+
+                    // 3. Show empty state if no pets match the selected category
+                    if (filteredPets.isEmpty) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.favorite_border_rounded, size: 70, color: Colors.grey.shade300),
+                            const SizedBox(height: 16),
+                            Text(
+                              "No favorite ${selectedCategory.toLowerCase()}s found",
+                              style: TextStyle(fontSize: 18, color: Colors.grey.shade500, fontWeight: FontWeight.w600),
+                            ),
+                          ],
                         ),
                       );
-                    },
-                  );
-                },
-              );
-            },
-          );
-        },
+                    }
+
+                    return GridView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                      itemCount: filteredPets.length, // Uses filtered count
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 14,
+                        crossAxisSpacing: 14,
+                        childAspectRatio: 0.78,
+                      ),
+                      itemBuilder: (context, index) {
+                        final pet = filteredPets[index]; // Displays filtered pet
+                        return GridPetCard(
+                          pet: pet,
+                          onTap: () {
+                            // Ensure HomeCubit is available down the route if needed
+                            final homeCubit = context.read<HomeCubit>();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BlocProvider.value(
+                                  value: homeCubit,
+                                  child: PetDetailPage(pet: pet),
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

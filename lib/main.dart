@@ -71,6 +71,7 @@ class PetAdoption extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => inject<AuthenticationCubit>()),
         BlocProvider(create: (_)=>inject<FavoriteCubit>()),
+        BlocProvider(create: (_)=>inject<HomeCubit>()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

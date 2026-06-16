@@ -16,17 +16,17 @@ class _ProfilePageState extends State<ProfilePage> {
 
     return Scaffold(
       backgroundColor: AppColors.clrWhite,
-      appBar: AppBar(
+      appBar:  AppBar(
         elevation: 0,
+        toolbarHeight: 80,
         centerTitle: true,
-        toolbarHeight: 140,
         iconTheme: const IconThemeData(color: Colors.white),
-        actions: [],
+
         flexibleSpace: Stack(
           fit: StackFit.expand,
           children: [
             Image.asset(
-              "assets/images/appbar/appb.png",
+              "assets/images/appbar/app.png",
               fit: BoxFit
                   .cover, // 6. Forces the image to fill the entire header area without warping
             ),
