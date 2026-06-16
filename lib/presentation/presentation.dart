@@ -15,7 +15,6 @@ export 'admin/admin.dart';
 export 'admin/widget/ready.dart';
 export 'profile/profile.dart';
 export 'home/home.dart';
-export 'home/widget/ready.dart';
 export 'home/widget/sub/pet_card.dart';
 export 'home/cubit/home_cubit.dart';
 export 'pet_detail/cubit/pet_detail_cubit.dart';

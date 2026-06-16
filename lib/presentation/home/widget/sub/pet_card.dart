@@ -6,71 +6,100 @@ import '../../../../adopt_pet.dart';
 class PetCard extends StatelessWidget {
   final PetEntity pet;
   final VoidCallback onTap;
+  final double scale;
 
-  const PetCard({super.key, required this.pet, required this.onTap});
+  const PetCard({
+    super.key,
+    required this.pet,
+    required this.onTap,
+    this.scale = 1.0,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 14),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20), // Softer, more modern rounded corners
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04), // Ultra-subtle depth shadow
-            blurRadius: 16,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(20),
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Row(
+    return Transform.scale(
+      scale: scale,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 8),
+        width: 220,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(25),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.06),
+              blurRadius: 20,
+              offset: const Offset(0, 8),
+            ),
+          ],
+        ),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(25),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.06),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
+              Expanded(
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(20),
+                        ),
+                        child: Image.network(
+                          pet.imageUrl,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, _, _) => Container(
+                            color: Colors.grey.shade100,
+                            child: Icon(
+                              Icons.pets_rounded,
+                              size: 40,
+                              color: Colors.grey.shade400,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    // Favorite Button overlaid on top of image
+                    Positioned(
+                      top: 100,
+                      right: 100,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.white.withValues(alpha: 0.9),
+                        child: IconButton(
+                          icon: Icon(
+                            pet.isFavorite
+                                ? Icons.favorite_rounded
+                                : Icons.favorite_border_rounded,
+                            color: pet.isFavorite
+                                ? Colors.redAccent
+                                : Colors.grey.shade600,
+                          ),
+                          onPressed: () {
+                            context.read<HomeCubit>().toggleFavorite(
+                              pet.id,
+                              !pet.isFavorite,
+                            );
+                          },
+                        ),
+                      ),
                     ),
                   ],
                 ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Image.network(
-                    pet.imageUrl,
-                    width: 150, // Increased size for a clearer visual presence
-                    height: 150,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, _, _) => Container(
-                      width: 85,
-                      height: 85,
-                      color: Colors.grey.shade100,
-                      child: Icon(Icons.pets_rounded, size: 36, color: Colors.grey.shade400),
-                    ),
-                  ),
-                ),
               ),
-              const SizedBox(width: 16),
 
-              // 2. Clean Text Content and Metadata Hierarchy
-              Expanded(
+              // 2. Info Section (Bottom half)
+              Padding(
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
                       pet.name,
                       style: const TextStyle(
-                        fontWeight: FontWeight.w800, // Stronger weight for a bold header
-                        fontSize: 18,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 20,
                         color: AppColors.clrGrey,
                       ),
                       maxLines: 1,
@@ -82,22 +111,24 @@ class PetCard extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 14,
-                        color: Colors.grey.shade500, // Subtle muted color for breed
+                        color: Colors.grey.shade500,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 8),
-                    // Modern chip tag for age instead of plain inline text
+                    const SizedBox(height: 10),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
-                        color: AppColors.clrPurple, // Soft background container tint
+                        color: AppColors.clrPurple,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
                         "${pet.age} ${pet.age == 1 ? 'Year' : 'Years'} Old",
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
                           color: AppColors.clrWhite,
@@ -105,25 +136,6 @@ class PetCard extends StatelessWidget {
                       ),
                     ),
                   ],
-                ),
-              ),
-
-              // 3. Floating Favorite Action Button
-              Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  customBorder: const CircleBorder(),
-                  onTap: () {
-                    context.read<HomeCubit>().toggleFavorite(pet.id, !pet.isFavorite);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Icon(
-                      pet.isFavorite ? Icons.favorite_rounded : Icons.favorite_border_rounded,
-                      color: pet.isFavorite ? Colors.redAccent : Colors.grey.shade400,
-                      size: 26,
-                    ),
-                  ),
                 ),
               ),
             ],

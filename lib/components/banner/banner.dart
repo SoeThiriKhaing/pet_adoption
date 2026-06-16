@@ -15,7 +15,10 @@ class CustomBanner extends StatelessWidget {
     required this.buttonText,
     required this.onTap,
     this.backgroundImageUrl,
-    this.gradientColors = const [Color(0xFFFFB74D), Color(0xFFFF9800)], // Warm Oranges
+    this.gradientColors = const [
+      Color(0xFFFFB74D),
+      Color(0xFFFF9800),
+    ], // Warm Oranges
   });
 
   @override
@@ -56,7 +59,6 @@ class CustomBanner extends StatelessWidget {
                 ),
               ),
 
-            // Content Left Side
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(
@@ -86,21 +88,26 @@ class CustomBanner extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
 
-                  // Action Button
                   ElevatedButton(
                     onPressed: onTap,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
                       foregroundColor: gradientColors.last,
                       elevation: 0,
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                     child: Text(
                       buttonText,
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                      ),
                     ),
                   ),
                 ],

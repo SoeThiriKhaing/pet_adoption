@@ -1,95 +1,155 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import '../../../adopt_pet.dart';
 
-class CategoryItem {
-  final String name;
-  final String svgPath;
+class HomeReadyView extends StatefulWidget {
+  const HomeReadyView({super.key});
 
-  CategoryItem({required this.name, required this.svgPath});
+  @override
+  State<HomeReadyView> createState() => _HomeReadyViewState();
 }
 
-class CategoryBar extends StatelessWidget {
-  const CategoryBar({super.key});
+class _HomeReadyViewState extends State<HomeReadyView> {
+  late final PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(
+      viewportFraction: 0.8 // Keeps side-cards peekable on screen edges
+    );
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose(); // Good practice to prevent memory leaks
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final List<CategoryItem> categories = [
-      CategoryItem(name: 'All', svgPath: "assets/images/categories/all.svg"),
-      CategoryItem(name: 'Dog', svgPath: "assets/images/categories/dog.svg"),
-      CategoryItem(name: 'Cat', svgPath: "assets/images/categories/cat.svg"),
-    ];
-
-    final selectedCategory = context.select(
-      (HomeCubit cubit) => cubit.state is HomeReady
-          ? (cubit.state as HomeReady).selectedCategory
-          : 'All',
-    );
-
-    return Container(
-      height: 100,
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        scrollDirection: Axis.horizontal,
-        itemCount: categories.length,
-        separatorBuilder: (_, _) => const SizedBox(width: 20),
-        itemBuilder: (context, index) {
-          final category = categories[index];
-          final isSelected = selectedCategory == category.name;
-
-          return GestureDetector(
-            onTap: () {
-              context.read<HomeCubit>().fetchPets(category.name);
-            },
-            child: Column(
-              children: [
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  width: 60,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: isSelected
-                        ? AppColors.clrPurple
-                        : Colors.grey.shade100,
-                    boxShadow: isSelected
-                        ? [
-                            BoxShadow(
-                              color: Colors.indigo.withValues(alpha: 0.3),
-                              blurRadius: 8,
-                              offset: const Offset(0, 4),
-                            ),
-                          ]
-                        : null,
-                  ),
-                  child: Center(
-                    child: SvgPicture.asset(
-                      category.svgPath,
-                      width: 28,
-                      height: 28,
-                      colorFilter: ColorFilter.mode(
-                        isSelected ? Colors.black54 : Colors.grey.shade600,
-                        BlendMode.srcIn,
-                      ),
-                    ),
-                  ),
+    return Scaffold(
+      backgroundColor: AppColors.clrWhite,
+      appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
+        toolbarHeight: 140,
+        iconTheme: const IconThemeData(color: Colors.white),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.notifications,
+              color: Colors.white,
+              size: 30,
+            ),
+          ),
+        ],
+        flexibleSpace: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.asset("assets/images/appbar/appb.png", fit: BoxFit.cover),
+          ],
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 4.0),
+        child: Column(
+          children: [
+            CustomSearchBox(),
+            $styles.insets.sm.toHeightSizedBox,
+            PetBannerCarousel(
+              banners: [
+                CustomBanner(
+                  title: "Adopt Max Today!",
+                  subtitle: "He has been at the shelter the longest.",
+                  buttonText: "Meet Max",
+                  backgroundImageUrl:
+                      "https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=500",
+                  onTap: () {},
                 ),
-                const SizedBox(height: 6),
-
-                Text(
-                  category.name,
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                    color: isSelected ? Colors.indigo : Colors.black87,
-                  ),
+                CustomBanner(
+                  title: "Donation Drive",
+                  subtitle:
+                      "100% of proceeds fund emergency pet medical bills.",
+                  buttonText: "Donate Now",
+                  gradientColors: const [Color(0xFF4CAF50), Color(0xFF2E7D32)],
+                  onTap: () {},
+                ),
+                CustomBanner(
+                  title: "Volunteer Sunday",
+                  subtitle:
+                      "Join us this weekend for our puppy socialization walk!",
+                  buttonText: "Sign Up",
+                  gradientColors: const [Color(0xFF2196F3), Color(0xFF1565C0)],
+                  onTap: () {},
                 ),
               ],
             ),
-          );
-        },
+            $styles.insets.md.toHeightSizedBox,
+
+            const CategoryBar(),
+            Expanded(
+              child: BlocBuilder<HomeCubit, HomeState>(
+                builder: (context, state) {
+                  return state.when(
+                    initial: () =>
+                        const Center(child: CircularProgressIndicator()),
+                    error: (message) => const Center(child: Text("Error")),
+                    ready: (pets, selectedCategory) {
+                      if (pets.isEmpty) {
+                        return const Center(child: Text("No pets available."));
+                      }
+
+                      // Replaced ListView.builder with an AnimatedBuilder + PageView.builder
+                      return AnimatedBuilder(
+                        animation: _pageController,
+                        builder: (context, child) {
+                          return PageView.builder(
+                            controller: _pageController,
+                            itemCount: pets.length,
+                            clipBehavior: Clip.none,
+                            // Allows the popping scale effect to breathe
+                            itemBuilder: (context, index) {
+                              // Dynamic scale calculation based on drag progress
+                              double scale = 1.0;
+                              if (_pageController.position.haveDimensions) {
+                                double value = _pageController.page! - index;
+                                // In-focus card stays 1.0, out-of-focus scales down to 0.85
+                                scale = (1 - (value.abs() * 0.15)).clamp(
+                                  0.85,
+                                  1.0,
+                                );
+                              } else {
+                                scale = index == 0 ? 1.0 : 0.85;
+                              }
+
+                              final pet = pets[index];
+                              return PetCard(
+                                pet: pet,
+                                scale: scale,
+                                // Remember to pass scale into your updated PetCard!
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          PetDetailPage(pet: pet),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          );
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
