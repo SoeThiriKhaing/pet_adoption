@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import '../../../adopt_pet.dart';
 
 class CategoryItem {
   final String name;
-  final IconData icon;
+  final String svgPath;
 
-  CategoryItem({required this.name, required this.icon});
+  CategoryItem({required this.name, required this.svgPath});
 }
 
 class CategoryBar extends StatelessWidget {
@@ -14,17 +15,16 @@ class CategoryBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final List<CategoryItem> categories = [
-      CategoryItem(name: 'All', icon: Icons.pets_rounded),
-      CategoryItem(name: 'Dog', icon: Icons.pets_rounded),
-      CategoryItem(name: 'Cat', icon: Icons.pets_outlined),
+      CategoryItem(name: 'All', svgPath: "assets/images/categories/all.svg"),
+      CategoryItem(name: 'Dog', svgPath: "assets/images/categories/dog.svg"),
+      CategoryItem(name: 'Cat', svgPath: "assets/images/categories/cat.svg"),
     ];
 
     final selectedCategory = context.select(
-            (HomeCubit cubit) => cubit.state is HomeReady
-            ? (cubit.state as HomeReady).selectedCategory
-            : 'All'
+      (HomeCubit cubit) => cubit.state is HomeReady
+          ? (cubit.state as HomeReady).selectedCategory
+          : 'All',
     );
 
     return Container(
@@ -34,7 +34,7 @@ class CategoryBar extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         scrollDirection: Axis.horizontal,
         itemCount: categories.length,
-        separatorBuilder: (_, _) => const SizedBox(width: 20), // Added separation space
+        separatorBuilder: (_, _) => const SizedBox(width: 20),
         itemBuilder: (context, index) {
           final category = categories[index];
           final isSelected = selectedCategory == category.name;
@@ -45,36 +45,39 @@ class CategoryBar extends StatelessWidget {
             },
             child: Column(
               children: [
-                // 3. The Circular Avatar Box Configuration
                 AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   width: 60,
                   height: 40,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: isSelected ? AppColors.clrPurple : Colors.grey.shade100,
+                    color: isSelected
+                        ? AppColors.clrPurple
+                        : Colors.grey.shade100,
                     boxShadow: isSelected
                         ? [
-                      BoxShadow(
-                        color: Colors.indigo.withValues(alpha: 0.3),
-                        blurRadius: 8,
-                        offset: const Offset(0, 4),
-                      )
-                    ]
+                            BoxShadow(
+                              color: Colors.indigo.withValues(alpha: 0.3),
+                              blurRadius: 8,
+                              offset: const Offset(0, 4),
+                            ),
+                          ]
                         : null,
                   ),
                   child: Center(
-                    child: Icon(
-                      category.icon,
-                      size: 28,
-                      color: isSelected ? Colors.white : Colors.grey.shade600,
+                    child: SvgPicture.asset(
+                      category.svgPath,
+                      width: 28,
+                      height: 28,
+                      colorFilter: ColorFilter.mode(
+                        isSelected ? Colors.black54 : Colors.grey.shade600,
+                        BlendMode.srcIn,
+                      ),
                     ),
-
                   ),
                 ),
                 const SizedBox(height: 6),
 
-                // 4. Category Title Label Text
                 Text(
                   category.name,
                   style: TextStyle(

@@ -11,7 +11,6 @@ class PetCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Using a simple InkWell container setup for a much cleaner material elevation layout
     return Container(
       margin: const EdgeInsets.only(bottom: 14),
       decoration: BoxDecoration(
@@ -32,7 +31,6 @@ class PetCard extends StatelessWidget {
           padding: const EdgeInsets.all(12),
           child: Row(
             children: [
-              // 1. Elevated Visual Frame for the Pet Image
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
@@ -48,8 +46,8 @@ class PetCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16),
                   child: Image.network(
                     pet.imageUrl,
-                    width: 85, // Increased size for a clearer visual presence
-                    height: 85,
+                    width: 150, // Increased size for a clearer visual presence
+                    height: 150,
                     fit: BoxFit.cover,
                     errorBuilder: (_, _, _) => Container(
                       width: 85,

@@ -5,4 +5,5 @@ export 'di/di.dart';
 export 'domain/domain.dart';
 export 'presentation/presentation.dart';
 export 'services/services.dart';
+export 'components/components.dart';
 

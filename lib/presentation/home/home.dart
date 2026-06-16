@@ -29,7 +29,16 @@ class HomeView extends StatelessWidget {
         centerTitle: true,
         toolbarHeight: 140,
         iconTheme: const IconThemeData(color: Colors.white),
-        actions: [],
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.notifications,
+              color: Colors.white,
+              size: 30,
+            ),
+          ),
+        ],
         flexibleSpace: Stack(
           fit: StackFit.expand,
           children: [
@@ -37,45 +46,80 @@ class HomeView extends StatelessWidget {
           ],
         ),
       ),
-      body: Column(
-        children: [
-          const CategoryBar(),
-          Expanded(
-            child: BlocBuilder<HomeCubit, HomeState>(
-              builder: (context, state) {
-                return state.when(
-                  initial: () =>
-                      const Center(child: CircularProgressIndicator()),
-                  error: (message) => Center(child: Text("Error")),
-                  ready: (pets, selectedCategory) {
-                    if (pets.isEmpty) {
-                      return const Center(child: Text("No pets available."));
-                    }
-
-                    return ListView.builder(
-                      padding: const EdgeInsets.all(15),
-                      itemCount: pets.length,
-                      itemBuilder: (context, index) {
-                        final pet = pets[index];
-                        return PetCard(
-                          pet: pet,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PetDetailPage(pet: pet),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    );
-                  },
-                );
-              },
+      body: Padding(
+        padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 4.0),
+        child: Column(
+          children: [
+            CustomSearchBox(),
+            $styles.insets.sm.toHeightSizedBox,
+            PetBannerCarousel(
+              banners: [
+                CustomBanner(
+                  title: "Adopt Max Today!",
+                  subtitle: "He has been at the shelter the longest.",
+                  buttonText: "Meet Max",
+                  backgroundImageUrl:
+                      "https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=500",
+                  onTap: () => print("Navigating to Max's profile"),
+                ),
+                CustomBanner(
+                  title: "Donation Drive",
+                  subtitle:
+                      "100% of proceeds fund emergency pet medical bills.",
+                  buttonText: "Donate Now",
+                  gradientColors: const [Color(0xFF4CAF50), Color(0xFF2E7D32)],
+                  onTap: () => print("Opening Stripe checkout screen"),
+                ),
+                CustomBanner(
+                  title: "Volunteer Sunday",
+                  subtitle:
+                      "Join us this weekend for our puppy socialization walk!",
+                  buttonText: "Sign Up",
+                  gradientColors: const [Color(0xFF2196F3), Color(0xFF1565C0)],
+                  onTap: () => print("Opening volunteer registration form"),
+                ),
+              ],
             ),
-          ),
-        ],
+            $styles.insets.md.toHeightSizedBox,
+
+            const CategoryBar(),
+            Expanded(
+              child: BlocBuilder<HomeCubit, HomeState>(
+                builder: (context, state) {
+                  return state.when(
+                    initial: () =>
+                        const Center(child: CircularProgressIndicator()),
+                    error: (message) => Center(child: Text("Error")),
+                    ready: (pets, selectedCategory) {
+                      if (pets.isEmpty) {
+                        return const Center(child: Text("No pets available."));
+                      }
+
+                      return ListView.builder(
+                        padding: const EdgeInsets.all(15),
+                        itemCount: pets.length,
+                        itemBuilder: (context, index) {
+                          final pet = pets[index];
+                          return PetCard(
+                            pet: pet,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PetDetailPage(pet: pet),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

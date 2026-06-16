@@ -26,7 +26,7 @@ class _PetDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade50, // Ultra-light background contrast
+      backgroundColor: Colors.grey.shade50,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -60,7 +60,7 @@ class _PetDetailView extends StatelessWidget {
                   child: Image.network(
                     pet.imageUrl,
                     fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Container(
+                    errorBuilder: (_, _, _) => Container(
                       color: Colors.grey.shade100,
                       child: const Icon(
                         Icons.pets_rounded,
@@ -74,14 +74,12 @@ class _PetDetailView extends StatelessWidget {
             ),
           ),
 
-          // 2. Main Content Body Area
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Title Block
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -99,7 +97,6 @@ class _PetDetailView extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
 
-                  // Modern Structural Grid instead of a standard string line divider
                   Row(
                     children: [
                       _buildInfoTag(Icons.pets_rounded, pet.breed),
@@ -113,7 +110,6 @@ class _PetDetailView extends StatelessWidget {
                     child: Divider(color: Colors.black12, height: 1),
                   ),
 
-                  // Description Information Grouping
                   const Text(
                     "About Me",
                     style: TextStyle(
@@ -144,12 +140,11 @@ class _PetDetailView extends StatelessWidget {
     );
   }
 
-  // 3. Compact Info Field Builder Tag
   Widget _buildInfoTag(IconData icon, String text) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.deepPurple.shade50,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.grey.shade200, width: 1),
       ),
@@ -163,7 +158,7 @@ class _PetDetailView extends StatelessWidget {
             style: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w600,
-              color: Colors.black87,
+              color:AppColors.clrBlack,
             ),
           ),
         ],
@@ -171,7 +166,6 @@ class _PetDetailView extends StatelessWidget {
     );
   }
 
-  // 4. Floating Footer Platform Execution Element
   Widget _buildBottomBtn(BuildContext context) {
     return Container(
       color: Colors.white,
@@ -181,7 +175,7 @@ class _PetDetailView extends StatelessWidget {
         top: 16,
         bottom:
             MediaQuery.of(context).padding.bottom +
-            16, // Dynamic safety layout padding
+            16,
       ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
@@ -189,7 +183,7 @@ class _PetDetailView extends StatelessWidget {
           foregroundColor: AppColors.clrWhite,
           minimumSize: const Size(double.infinity, 56),
           elevation: 4,
-          shadowColor: AppColors.clrPurple.withOpacity(0.3),
+          shadowColor: AppColors.clrPurple.withValues(alpha: 0.3),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -235,7 +229,7 @@ class _PetDetailView extends StatelessWidget {
                 child: const Icon(Icons.phone_rounded, color: Colors.green),
               ),
               title: const Text(
-                "Call",
+                "Call Admin",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               onTap: () {
